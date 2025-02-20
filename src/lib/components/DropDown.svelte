@@ -17,11 +17,12 @@
     if (el.contains(event.relatedTarget)) return;
     el.open = false;
   }}
+  data-testid="dropdown"
 >
-  <summary class={controlClass}>
+  <summary class={controlClass} data-testid="dropdown-anchor">
     {@render control?.()}
   </summary>
-  <ul>
+  <ul data-testid="dropdown-content">
     {@render children?.()}
   </ul>
 </details>
