@@ -30,3 +30,9 @@ src/lib/i18n/messages/*.po.json
 static/emojis.json
 
 android
+
+# Playwright
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/

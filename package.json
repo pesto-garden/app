@@ -10,6 +10,7 @@
     "check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
     "check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
     "test": "yarn i18n:compile && vitest",
+    "test:e2e": "playwright test",
     "lint": "prettier --check . && eslint .",
     "format": "prettier --write .",
     "i18n:extract": "node src/lib/i18n/extract.cjs",
@@ -17,12 +18,14 @@
     "i18n:compile": "find ./src/lib/i18n/messages -name '*.po' -print0 -exec node src/lib/i18n/po2json.cjs -i {} -o {}.json -v ';'"
   },
   "devDependencies": {
+    "@playwright/test": "^1.50.1",
     "@rgglez/gettext-extractor": "^3.8.1",
     "@sveltejs/adapter-auto": "^3.0.0",
     "@sveltejs/adapter-static": "^3.0.4",
     "@sveltejs/kit": "^2.5.27",
     "@sveltejs/vite-plugin-svelte": "^4.0.0",
     "@types/eslint": "^9.6.0",
+    "@types/node": "^22.13.4",
     "@types/pouchdb": "^6.4.2",
     "commander": "^11.1.0",
     "eslint": "^9.0.0",

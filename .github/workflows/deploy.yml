@@ -18,7 +18,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - uses: actions/setup-node@v2
+      - uses: actions/setup-node@v4
         with:
           node-version: "18"
           cache: "yarn"
@@ -37,7 +37,7 @@ jobs:
           echo "PUBLIC_SENTRY_DSN=https://d2611ff9ef1f61f8ba31e03e8c120280@o4508561188061184.ingest.de.sentry.io/4508561193107536" >> .env &&
           cat .env
 
-      - name: Run tests
+      - name: Run unit tests
         run: yarn test
 
       - name: Build
@@ -45,6 +45,19 @@ jobs:
         env:
           SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
           VITE_CSP_ALLOWED_CONNECT_SRC: "ws:,*.pesto.garden"
+
+      - name: Install Playwright Browsers
+        run: npx playwright install --with-deps
+
+      - name: Run Playwright tests
+        run: yarn test:e2e
+  
+      - uses: actions/upload-artifact@v4
+        if: ${{ !cancelled() }}
+        with:
+          name: playwright-report
+          path: playwright-report/
+          retention-days: 30
 
       - name: Create build zip
         run: zip -r pesto-app.zip ./build/
