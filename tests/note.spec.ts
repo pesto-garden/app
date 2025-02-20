@@ -5,6 +5,7 @@ const DEFAULT_TIMEOUT = 200
 async function navigateTo(page: Page, text: string) {
 	await toggleMenu(page)
 	await page.locator("aside nav").getByText(text, {exact: true}).click()
+	await page.waitForTimeout(DEFAULT_TIMEOUT);
 }
 
 async function toggleMenu(page: Page) {
@@ -91,4 +92,24 @@ test('add note and delete it', async ({ page }) => {
 	
 	expect(await page.locator("article").count()).toBe(0)
 
+});
+
+test('add note and fav/unfav it', async ({ page }) => {
+	await createNote(page, {content: "hello **world**"})
+	
+	await navigateTo(page, "Favoris")
+	expect(await page.locator("article").count()).toBe(0)
+
+	await navigateTo(page, "Toutes les notes")
+
+	await page.locator("article").getByTestId("dropdown-anchor").click();
+	await page.locator("article").getByTestId("dropdown-content").getByText("Ajouter aux favoris", {exact: true}).click();
+	
+	await navigateTo(page, "Favoris")
+	expect(await page.locator("article").count()).toBe(1)
+	
+	await page.locator("article").getByTestId("dropdown-anchor").click();
+	await page.locator("article").getByTestId("dropdown-content").getByText("Retirer des favoris", {exact: true}).click();
+	expect(await page.locator("article").count()).toBe(0)
+	
 });
