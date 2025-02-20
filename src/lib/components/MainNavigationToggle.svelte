@@ -23,6 +23,7 @@
 <button
   type="button"
   class={"button__transparent button__icon " + restProps.class || ""}
+  data-testid="menu-toggle"
   aria-label={sidebarFullpage
     ? $_("Fermer le menu principal", "")
     : $_("Ouvrir le menu principal", "")}

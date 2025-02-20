@@ -8,6 +8,7 @@ test('home page has no notes', async ({ page }) => {
 
 test('navigation add note and render it as markdown', async ({ page }) => {
 	await page.goto('/');
+	await page.getByTestId('menu-toggle').locator('visible=true').click()
 	const link = await page.locator("a").getByText('Nouvelle note', {exact: true})
 	await link.click()
 	const content = page.getByLabel('Contenu');
@@ -19,5 +20,4 @@ test('navigation add note and render it as markdown', async ({ page }) => {
 	const note = page.locator("article").getByText("Hello");
 	const html = await note.innerHTML()
 	await expect(html).toBe("Hello <strong>world</strong>")
-	
 });
