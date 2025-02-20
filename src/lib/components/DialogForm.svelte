@@ -36,7 +36,7 @@
 </button>
 
 <!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
-<dialog bind:this={dialog} aria-labelledby="dialog-title" aria-describedby="dialog-description">
+<dialog bind:this={dialog} aria-labelledby="dialog-title" aria-describedby="dialog-description" data-testid="dialog">
   <div class="scroll__wrapper">
     <header class="flex__row flex__justify-between flex__align-center p__inline-3">
       <h2 id="dialog-title" class="m__block-0">{title}</h2>
