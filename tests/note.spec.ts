@@ -36,17 +36,17 @@ test('add note and render it as markdown', async ({ page }) => {
 	
 	const content = page.getByLabel('Contenu');
 	
-	await content.fill("Hello **world**");
+	await content.fill("bonjour **le monde**");
 	await page.waitForTimeout(DEFAULT_TIMEOUT);
 	await page.getByText('Enregistrer', {exact: true}).click()
 
-	const note = page.locator("article").getByText("Hello");
+	const note = page.locator("article").getByText("bonjour");
 	const html = await note.innerHTML()
-	await expect(html).toBe("Hello <strong>world</strong>")
+	await expect(html).toBe("bonjour <strong>le monde</strong>")
 });
 
 test('add note and edit it', async ({ page }) => {
-	await createNote(page, {content: "hellow **world**"})
+	await createNote(page, {content: "bonjour **le monde**"})
 	
 	// now edit it
 	page.locator("article").getByTestId("dropdown-anchor").click();
@@ -65,7 +65,7 @@ test('add note and edit it', async ({ page }) => {
 
 
 test('search note', async ({ page }) => {
-	await createNote(page, {content: "hello **world**"})
+	await createNote(page, {content: "bonjour **le monde**"})
 	await createNote(page, {content: "foo **bar**"})
 	
 	await navigateTo(page, 'Toutes les notes')
@@ -82,7 +82,7 @@ test('search note', async ({ page }) => {
 
 
 test('add note and delete it', async ({ page }) => {
-	await createNote(page, {content: "hello **world**"})
+	await createNote(page, {content: "bonjour **le monde**"})
 	
 	await navigateTo(page, "Toutes les notes")
 	// now delete it
@@ -95,7 +95,7 @@ test('add note and delete it', async ({ page }) => {
 });
 
 test('add note and fav/unfav it', async ({ page }) => {
-	await createNote(page, {content: "hello **world**"})
+	await createNote(page, {content: "bonjour **le monde**"})
 	
 	await navigateTo(page, "Favoris")
 	expect(await page.locator("article").count()).toBe(0)
