@@ -954,3 +954,30 @@ export function formatDateShort(d: string) {
   let formatted = `${DATE_FORMATTER_SHORT.format(p)}`;
   return capitalizeFirstLetter(formatted);
 }
+export function formatTimeShort(d: string) {
+  let p = new Date(d);
+  let formatted = `${TIME_FORMATTER.format(p)}`;
+  return formatted;
+}
+
+export function timeAgo(d: string) {
+  const date = (d instanceof Date) ? d : new Date(d);
+  const formatter = new Intl.RelativeTimeFormat(LOCALE);
+  const ranges = {
+    years: 3600 * 24 * 365,
+    months: 3600 * 24 * 30,
+    weeks: 3600 * 24 * 7,
+    days: 3600 * 24,
+    hours: 3600,
+    minutes: 60,
+    seconds: 1
+  };
+  const secondsElapsed = Math.min((date.getTime() - Date.now()) / 1000, 0);
+  for (let key in ranges) {
+    if (ranges[key] < Math.abs(secondsElapsed)) {
+      const delta = secondsElapsed / ranges[key];
+      return formatter.format(Math.round(delta), key);
+    }
+  }
+  return formatter.format(-1, "seconds");
+}

@@ -16,7 +16,7 @@
         key++;
       }}
     >
-      {$_("Enregistrer", "")}
+      {$_("Retour à la liste", "")}
     </a>
   </NoteForm>
 </main>

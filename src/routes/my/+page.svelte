@@ -95,7 +95,7 @@
 <aside>
   <section>
     {@render children?.()}
-    {#key data.collection?.id + noteFormKey}
+    {#key noteFormKey + String(data.collection?.id)}
       <NoteForm
         note={null}
         collection={data.collection?.id || null}
@@ -107,7 +107,7 @@
           noteFormKey++;
         }}
       >
-        <button type="submit"> {$_("Enregistrer et rédiger une nouvelle note", "")} </button>
+        <button type="submit"> {$_("Rédiger une nouvelle note", "")} </button>
       </NoteForm>
     {/key}
   </section>

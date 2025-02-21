@@ -940,6 +940,15 @@ emoji-picker {
   width: 100%;
 }
 
+.text__discrete {
+  color: var(--text-discrete-color);
+}
+
+
+.text__size-80 {
+  font-size: 80%;
+}
+
 @media print {
   html {
     font-size: 18px;

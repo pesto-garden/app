@@ -4,6 +4,7 @@
   import IconaMoonTrash from "virtual:icons/iconamoon/trash";
   import IconaMoonEye from "virtual:icons/iconamoon/eye";
   import FragmentEditor from "./FragmentEditor.svelte";
+  import TimeAgo from "./TimeAgo.svelte";
   import IconaMoonFileDocument from "virtual:icons/iconamoon/file-document";
   import MainNavigationToggle from "./MainNavigationToggle.svelte";
   import { createEventDispatcher, onDestroy } from "svelte";
@@ -14,7 +15,8 @@
     getNewNote,
     buildUniqueId,
     getNewFormFragment,
-    getNoteUpdateData
+    getNoteUpdateData,
+    formatTimeShort,
   } from "$lib/db";
   import sortBy from "lodash/sortBy";
   import DialogForm from "./DialogForm.svelte";
@@ -185,8 +187,15 @@
           localNote = e.detail.note;
         }}
       />
-      <div class="flex__row flex__justify-between">
+      <div class="flex__row flex__justify-between flex__align-center">
         {@render children?.()}
+        {#if localNote?.modified_at}
+          <TimeAgo 
+            class="text__discrete text__size-80" 
+            data-testid="note-saved-ago"
+            date={localNote.modified_at} 
+            anchor={$_("Enregistré %ago", "")}></TimeAgo>
+        {/if}
       </div>
     </div>
   </form>

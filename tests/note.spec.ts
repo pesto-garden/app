@@ -1,11 +1,15 @@
 import { expect, test, type Page } from '@playwright/test';
-import { first } from 'lodash';
 
 const DEFAULT_TIMEOUT = 200
 
 async function searchComplete(page: Page) {
 	await page.getByTestId("matching-count").waitFor()
 }
+
+async function noteSaved(page: Page) {
+	await page.getByTestId("note-saved-ago").getByText("1 seconde").waitFor()
+}
+
 async function navigateTo(page: Page, text: string) {
 	await toggleMenu(page)
 	await page.locator("aside nav").getByText(text, {exact: true}).click()
@@ -25,9 +29,9 @@ async function createNote(page: Page, params = {title: "", content: "" }) {
 		let content = page.getByLabel('Contenu');
 		await content.fill(params.content);
 	}
-	await page.waitForTimeout(DEFAULT_TIMEOUT);
-	await page.getByText('Enregistrer', {exact: true}).click()
+	await noteSaved(page)
 }
+
 test('home page has no notes', async ({ page }) => {
 	await page.goto('/');
 	await expect(page.getByText('0 notes trouvées')).toBeVisible();
@@ -40,9 +44,9 @@ test('add note and render it as markdown', async ({ page }) => {
 	const content = page.getByLabel('Contenu');
 	
 	await content.fill("bonjour **le monde**");
-	await page.waitForTimeout(DEFAULT_TIMEOUT);
-	await page.getByText('Enregistrer', {exact: true}).click()
-
+	await noteSaved(page)
+	await navigateTo(page, 'Toutes les notes')
+	
 	const note = page.locator("article").getByText("bonjour");
 	const html = await note.innerHTML()
 	await expect(html).toBe("bonjour <strong>le monde</strong>")
@@ -50,6 +54,7 @@ test('add note and render it as markdown', async ({ page }) => {
 
 test('add note and edit it', async ({ page }) => {
 	await createNote(page, {content: "bonjour **le monde**"})
+	await navigateTo(page, 'Toutes les notes')
 	
 	// now edit it
 	page.locator("article").getByTestId("dropdown-anchor").click();
@@ -58,10 +63,12 @@ test('add note and edit it', async ({ page }) => {
 	let content = page.getByLabel('Contenu');
 	
 	await content.fill("foo **bar**");
-	await page.waitForTimeout(DEFAULT_TIMEOUT);
+	await noteSaved(page)
 	await page.getByTitle('Voir cette note', {exact: true}).click()
-	
+	await page.waitForTimeout(DEFAULT_TIMEOUT)
+
 	const note = await page.locator("article .prose")
+	await note.waitFor()
 	const html = await note.innerHTML()
 	await expect(html).toBe("<!----><p>foo <strong>bar</strong></p>\n<!---->")
 });
@@ -78,7 +85,7 @@ test('search note', async ({ page }) => {
 	await search.focus()
 	await search.fill("foo")
 	await search.press("Enter")
-	await page.waitForTimeout(DEFAULT_TIMEOUT);
+	await searchComplete(page)
 	
 	expect(await page.locator("article").count()).toBe(1)
 	
@@ -110,6 +117,7 @@ test('add note and fav/unfav it', async ({ page }) => {
 	await page.locator("article").getByTestId("dropdown-content").getByText("Ajouter aux favoris", {exact: true}).click();
 	
 	await navigateTo(page, "Favoris")
+	await searchComplete(page)
 	expect(await page.locator("article").count()).toBe(1)
 	
 	await page.locator("article").getByTestId("dropdown-anchor").click();
