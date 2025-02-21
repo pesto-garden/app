@@ -1,11 +1,14 @@
 import { expect, test, type Page } from '@playwright/test';
+import { first } from 'lodash';
 
 const DEFAULT_TIMEOUT = 200
 
+async function searchComplete(page: Page) {
+	await page.getByTestId("matching-count").waitFor()
+}
 async function navigateTo(page: Page, text: string) {
 	await toggleMenu(page)
 	await page.locator("aside nav").getByText(text, {exact: true}).click()
-	await page.waitForTimeout(DEFAULT_TIMEOUT);
 }
 
 async function toggleMenu(page: Page) {
@@ -69,7 +72,8 @@ test('search note', async ({ page }) => {
 	await createNote(page, {content: "foo **bar**"})
 	
 	await navigateTo(page, 'Toutes les notes')
-	await page.waitForTimeout(DEFAULT_TIMEOUT);
+	await searchComplete(page)
+
 	let search = await page.locator(`input[type="search"]`)
 	await search.focus()
 	await search.fill("foo")
@@ -111,5 +115,34 @@ test('add note and fav/unfav it', async ({ page }) => {
 	await page.locator("article").getByTestId("dropdown-anchor").click();
 	await page.locator("article").getByTestId("dropdown-content").getByText("Retirer des favoris", {exact: true}).click();
 	expect(await page.locator("article").count()).toBe(0)
+	
+});
+
+
+test('hashtag rendering and search', async ({ page }) => {
+	await createNote(page, {content: "#évènement +joyeux"})
+	await createNote(page, {content: "#évènement -triste"})
+	
+	await navigateTo(page, "Toutes les notes")
+	await searchComplete(page)
+	
+	expect(await page.locator("article").count()).toBe(2)
+	
+	await page.locator("article").getByText("#évènement").first().click();
+	await searchComplete(page)
+	
+	expect(await page.locator("article").count()).toBe(2)
+	expect(await page.locator(`input[type="search"]`)).toHaveValue("tag:évènement")
+	
+	await navigateTo(page, "Toutes les notes")
+	await searchComplete(page)
+	expect(await page.locator("article").count()).toBe(2)
+	
+	await page.locator("article").getByText("-triste").first().click();
+	await searchComplete(page)
+	
+	expect(await page.locator("article").count()).toBe(1)
+	expect(await page.locator(`input[type="search"]`)).toHaveValue("tag:triste")
+	
 	
 });

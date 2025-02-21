@@ -149,7 +149,7 @@
         </div>
       {/if}
       {#if matchingCount >= notes.length}
-        <span>
+        <span data-testid="matching-count">
           {$_n(`1 note trouvée`, `%n notes trouvées`, matchingCount)}
         </span>
       {/if}
