@@ -241,7 +241,7 @@
   </textarea>
 
   {#if matches.length > 0}
-    <ul bind:this={suggestions} class="mirror__suggestions" role="listbox">
+    <ul bind:this={suggestions} class="mirror__suggestions" role="listbox" data-testid="autocomplete-list">
       {#each matches as match, i (i)}
         <li
           aria-posinset={i + 1}
@@ -253,6 +253,7 @@
           <button
             type="button"
             tabindex="-1"
+            data-testid="autocomplete-option"
             onclick={(e) => {
               replaceCurrentWord(textarea, match, true);
               matches = [];

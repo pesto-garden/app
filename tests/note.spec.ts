@@ -2,8 +2,8 @@ import { expect, test, type Page } from '@playwright/test';
 
 const DEFAULT_TIMEOUT = 200
 
-async function searchComplete(page: Page) {
-	await page.getByTestId("matching-count").waitFor()
+async function searchComplete(page: Page, expected: number) {
+	await page.getByTestId("matching-count").getByText(String(expected)).waitFor()
 }
 
 async function noteSaved(page: Page) {
@@ -79,13 +79,13 @@ test('search note', async ({ page }) => {
 	await createNote(page, {content: "foo **bar**"})
 	
 	await navigateTo(page, 'Toutes les notes')
-	await searchComplete(page)
+	await searchComplete(page, 2)
 
 	let search = await page.locator(`input[type="search"]`)
 	await search.focus()
 	await search.fill("foo")
 	await search.press("Enter")
-	await searchComplete(page)
+	await searchComplete(page, 1)
 	
 	expect(await page.locator("article").count()).toBe(1)
 	
@@ -117,7 +117,7 @@ test('add note and fav/unfav it', async ({ page }) => {
 	await page.locator("article").getByTestId("dropdown-content").getByText("Ajouter aux favoris", {exact: true}).click();
 	
 	await navigateTo(page, "Favoris")
-	await searchComplete(page)
+	await searchComplete(page, 1)
 	expect(await page.locator("article").count()).toBe(1)
 	
 	await page.locator("article").getByTestId("dropdown-anchor").click();
@@ -132,25 +132,52 @@ test('hashtag rendering and search', async ({ page }) => {
 	await createNote(page, {content: "#évènement -triste"})
 	
 	await navigateTo(page, "Toutes les notes")
-	await searchComplete(page)
+	await searchComplete(page, 2)
 	
 	expect(await page.locator("article").count()).toBe(2)
 	
 	await page.locator("article").getByText("#évènement").first().click();
-	await searchComplete(page)
+	await searchComplete(page, 2)
 	
 	expect(await page.locator("article").count()).toBe(2)
 	expect(await page.locator(`input[type="search"]`)).toHaveValue("tag:évènement")
 	
 	await navigateTo(page, "Toutes les notes")
-	await searchComplete(page)
+	await searchComplete(page, 2)
 	expect(await page.locator("article").count()).toBe(2)
 	
 	await page.locator("article").getByText("-triste").first().click();
-	await searchComplete(page)
+	await searchComplete(page, 1)
 	
 	expect(await page.locator("article").count()).toBe(1)
 	expect(await page.locator(`input[type="search"]`)).toHaveValue("tag:triste")
+
+});
+
+test('hashtag autocompletion', async ({ page }) => {
+	await createNote(page, {content: "#évènement +joyeux #idée #idéal #autre"})
 	
+	await navigateTo(page, "Nouvelle note")
+	const content = page.getByLabel('Contenu');
+	
+	await content.fill("+j");
+	
+	expect(await page.getByTestId("autocomplete-option").count()).toBe(1)
+	await page.getByTestId("autocomplete-option").getByText("+joyeux").click()
+	
+	expect(content).toHaveValue("+joyeux")
+	
+	await content.pressSequentially(" #id");
+	expect(await page.getByTestId("autocomplete-option").count()).toBe(2)
+	await content.press("ArrowDown");
+	expect(content).toHaveValue("+joyeux #idée")
+	await content.press("ArrowDown");
+	expect(content).toHaveValue("+joyeux #idéal")
+	
+	// echap should close the dropdown
+	await content.pressSequentially(" #id");
+	await content.press("Escape");
+
+	await expect(page.getByTestId("autocomplete-option").locator("visible=true")).toHaveCount(0);
 	
 });
