@@ -15,6 +15,7 @@ let projectConfig = {
   locale: 'fr-FR',
 }
 export default defineConfig({
+  timeout: 15000,
   testDir: './tests',
   /* Run tests in files in parallel */
   fullyParallel: true,

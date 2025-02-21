@@ -3,16 +3,17 @@ import { expect, test, type Page } from '@playwright/test';
 const DEFAULT_TIMEOUT = 200
 
 async function searchComplete(page: Page, expected: number) {
-	await page.getByTestId("matching-count").getByText(String(expected)).waitFor()
+	await page.getByTestId("matching-count").locator("visible=true").getByText(String(expected)).waitFor()
 }
 
 async function noteSaved(page: Page) {
-	await page.getByTestId("note-saved-ago").getByText("1 seconde").waitFor()
+	await page.getByTestId("note-saved-ago").locator("visible=true").getByText("1 seconde").waitFor()
 }
 
 async function navigateTo(page: Page, text: string) {
 	await toggleMenu(page)
 	await page.locator("aside nav").getByText(text, {exact: true}).click()
+	await expect(page.locator("aside nav").locator("visible=true")).toHaveCount(0)
 }
 
 async function toggleMenu(page: Page) {
