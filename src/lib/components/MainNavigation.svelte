@@ -1,6 +1,6 @@
 <script lang="ts">
   import { _, _n } from "$lib/i18n/index.svelte";
-  import { globals, syncReplications, getNewCollection } from "$lib/db";
+  import { globals, launchReplications, getNewCollection } from "$lib/db";
   import MainNavigationLink from "./MainNavigationLink.svelte";
   import DialogForm from "./DialogForm.svelte";
   import CollectionForm from "./CollectionForm.svelte";
@@ -74,7 +74,7 @@
             title={$_("Synchroniser", "")}
             onclick={async (e) => {
               isSyncing = true;
-              await syncReplications(globals.replications);
+              launchReplications(globals.uiState, globals.db)
               setTimeout(() => {
                 isSyncing = false;
               }, 1000);

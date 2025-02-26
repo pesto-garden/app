@@ -430,14 +430,11 @@ async function setupReplications(db: Database, current: [], config: AnyReplicati
   // we stop and delete any existing replications
   for (const replicationState of current) {
     replicationState?.pull?._fetch.abort();
-    if (replicationState.pause) {
-      await replicationState.pause();
-    }
-    if (replicationState.cancel) {
-      await replicationState.cancel();
-    }
     if (replicationState.remove) {
-      await replicationState.remove();
+      await replicationState?.remove();
+    }
+    else if (replicationState.cancel) {
+      await replicationState.cancel();
     }
   }
 
