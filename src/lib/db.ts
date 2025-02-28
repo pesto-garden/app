@@ -6,6 +6,7 @@ import {
   type MangoQuery,
   type RxCollection,
   type RxDatabase,
+  type RxConflictHandler,
   type RxDocument,
   type ExtractDocumentTypeFromTypedRxJsonSchema,
   type RxJsonSchema,
@@ -363,6 +364,22 @@ export type PushPullConfig = {
   pull?: {};
   push?: {};
 };
+
+export const documentConflictHandler: RxConflictHandler<any> = {
+  isEqual (a, b) {
+    return a.modified_at && b.modified_at && a.modified_at === b.modified_at
+  },
+  resolve(i) {
+    /**
+     * The default conflict handler will always
+     * drop the fork state and use the master state instead.
+     * 
+     * In your custom conflict handler you likely want to merge properties
+     * of the realMasterState and the newDocumentState instead.
+     */
+    return i.realMasterState;
+}
+} 
 export async function getDb() {
   if (globals.db) {
     return globals;
@@ -392,6 +409,7 @@ export async function getDb() {
     documents: {
       schema: documentSchema,
       autoMigrate: false,
+      conflictHandler: documentConflictHandler,
       migrationStrategies
     }
   });
@@ -583,6 +601,7 @@ async function getPestoServerReplicationState(db: Database, config: PestoServerR
       function serializeDocumentState(state) {
         return {
           id: state.id,
+          toto: "toto",
           modified_at: state.modified_at,
           content: JSON.stringify(state),
           _deleted: state._deleted
