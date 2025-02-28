@@ -18,7 +18,7 @@ import {
 } from "rxdb";
 import { replicateRxCollection } from "rxdb/plugins/replication";
 import { RxDBMigrationSchemaPlugin } from "rxdb/plugins/migration-schema";
-import { wrappedValidateAjvStorage } from "rxdb/plugins/validate-ajv";
+import { wrappedValidateAjvStorage, getAjv } from "rxdb/plugins/validate-ajv";
 import { getRxStorageDexie } from "rxdb/plugins/storage-dexie";
 import { RxDBStatePlugin } from "rxdb/plugins/state";
 import { RxDBUpdatePlugin } from "rxdb/plugins/update";
@@ -369,6 +369,11 @@ export async function getDb() {
   }
   let storage = getRxStorageDexie();
   if (dev) {
+    const ajv = getAjv();
+    ajv.addFormat('date-time', {
+      type: 'string',
+      validate: v => v.includes('T'),
+    });
     storage = wrappedValidateAjvStorage({
       storage
     });
