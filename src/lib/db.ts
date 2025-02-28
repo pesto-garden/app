@@ -601,7 +601,6 @@ async function getPestoServerReplicationState(db: Database, config: PestoServerR
       function serializeDocumentState(state) {
         return {
           id: state.id,
-          toto: "toto",
           modified_at: state.modified_at,
           content: JSON.stringify(state),
           _deleted: state._deleted
