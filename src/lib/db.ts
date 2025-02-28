@@ -378,8 +378,18 @@ export const documentConflictHandler: RxConflictHandler<any> = {
      * of the realMasterState and the newDocumentState instead.
      */
     console.log("Resolving conflict", i.realMasterState, i)
+    if (i.newDocumentState.modified_at > i.realMasterState.modified_at) {
+      console.log("Returning new document state, it's more recent")
+      return i.newDocumentState
+    }
+    if (i.realMasterState.content && i.realMasterState.content.startsWith('{')) {
+      // conflict with the JSON version from the server
+      console.log("Returning JSON parsed master document state, it's more recent")
+      return JSON.parse(i.realMasterState.content)
+    }
+    console.log("Returning master state as is")
     return i.realMasterState;
-}
+  }
 } 
 export async function getDb() {
   if (globals.db) {
