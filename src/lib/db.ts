@@ -377,18 +377,24 @@ export const documentConflictHandler: RxConflictHandler<any> = {
      * In your custom conflict handler you likely want to merge properties
      * of the realMasterState and the newDocumentState instead.
      */
-    console.log("Resolving conflict", i.realMasterState, i)
+    let doc
     if (i.newDocumentState.modified_at > i.realMasterState.modified_at) {
       console.log("Returning new document state, it's more recent")
-      return i.newDocumentState
-    }
-    if (i.realMasterState.content && i.realMasterState.content.startsWith('{')) {
+      doc = i.newDocumentState
+    } else if (i.realMasterState.content && i.realMasterState.content.startsWith('{')) {
       // conflict with the JSON version from the server
       console.log("Returning JSON parsed master document state, it's more recent")
-      return JSON.parse(i.realMasterState.content)
+      doc = JSON.parse(i.realMasterState.content)
+    } else {
+      console.log("Returning master state as is")
+      doc = i.realMasterState
     }
-    console.log("Returning master state as is")
-    return i.realMasterState;
+    if (i.newDocumentState._deleted || i.realMasterState._deleted) {
+      // one of the documents was deleted, we mark it for deletion
+      console.log("Markding for deletion")
+      doc = {...doc, _deleted: true}
+    }
+    return doc;
   }
 } 
 export async function getDb() {
