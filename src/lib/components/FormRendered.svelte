@@ -5,7 +5,7 @@
   import FormBuilder from "$lib/components/FormBuilder.svelte";
   import DialogForm from "$lib/components/DialogForm.svelte";
   import cloneDeep from "lodash/cloneDeep";
-  import { type FormConfiguration, createOrUpdateForm, globals, getById } from "$lib/db";
+  import { type FormConfiguration, createOrUpdateForm, globals, getById, removeDocument} from "$lib/db";
 
   interface Props {
     children: import("svelte").Snippet;
@@ -67,7 +67,7 @@
           title={$_("Supprimer le formulaire %0", "", [form.name])}
           onsubmit={async (e: SubmitEvent) => {
             let form = await getById(globals.db.documents, id);
-            await form.remove();
+            await removeDocument(form);
             return e.preventDefault();
           }}
         >

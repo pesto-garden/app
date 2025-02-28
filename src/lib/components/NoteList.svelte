@@ -13,7 +13,8 @@
     globals,
     getById,
     type DocumentType,
-    getNoteSelector
+    getNoteSelector,
+    removeDocument,
   } from "$lib/db";
   import { clearSubscriptions } from "$lib/ui";
   import { onDestroy } from "svelte";
@@ -134,7 +135,7 @@
                 .find({ selector: { col: collection.id } })
                 .patch({ col: null });
               let document = await getById(globals.db.documents, collection.id);
-              await document.remove();
+              await removeDocument(document);
               goto("/my");
               return e.preventDefault();
             }}

@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { type DocumentDocument, getNoteUpdateData, formatDate } from "$lib/db";
+  import { type DocumentDocument, getNoteUpdateData, formatDate, removeDocument } from "$lib/db";
   import { renderMarkdown } from "$lib/ui";
   import FormDataFragment from "./FormDataFragment.svelte";
   import RenderedNoteHeader from "./RenderedNoteHeader.svelte";
@@ -57,7 +57,7 @@
         let fragments = note.toMutableJSON().fragments;
         delete fragments.todolist;
         if (isEmpty(fragments)) {
-          await note.incrementalRemove();
+          await removeDocument(note);
           onDelete?.();
         }
       }}

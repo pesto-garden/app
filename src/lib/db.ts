@@ -436,6 +436,15 @@ export async function getDb() {
   return { db: globals.db, uiState: globals.uiState, replications: globals.replications };
 }
 
+export async function removeDocument(document: DocumentDocument) {
+  // we set the modified_at field before deletion to ensure 
+  // deletion is propagated properly accross replication
+  await document.incrementalUpdate({
+    $set: {modified_at: new Date().toISOString(), _deleted: true}
+  });
+  return await document.incrementalRemove()
+}
+
 export function loadFormsQuery() {
   return globals.db.documents.find({
     limit: 20000,

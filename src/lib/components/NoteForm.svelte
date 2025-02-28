@@ -16,7 +16,7 @@
     buildUniqueId,
     getNewFormFragment,
     getNoteUpdateData,
-    formatTimeShort,
+    removeDocument,
   } from "$lib/db";
   import sortBy from "lodash/sortBy";
   import DialogForm from "./DialogForm.svelte";
@@ -167,7 +167,7 @@
           title={$_("Supprimer cette note ?", "")}
           onsubmit={(e: SubmitEvent) => {
             e.preventDefault();
-            localNote.remove();
+            removeDocument(localNote);
             dispatch("delete", { note: localNote });
           }}
         >

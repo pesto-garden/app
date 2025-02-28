@@ -1,6 +1,6 @@
 <script lang="ts">
   import { _, _n } from "$lib/i18n/index.svelte";
-  import { type DocumentDocument, formatDate, getNoteUpdateData } from "$lib/db";
+  import { type DocumentDocument, formatDate, getNoteUpdateData, removeDocument } from "$lib/db";
   import { noteToText } from "$lib/ui";
   import MainNavigationToggle from "$lib/components/MainNavigationToggle.svelte";
   import DropDown from "./DropDown.svelte";
@@ -125,7 +125,7 @@
         title={$_("Supprimer cette note ?", "")}
         onsubmit={async (e: SubmitEvent) => {
           e.preventDefault();
-          await note.incrementalRemove();
+          removeDocument(note)
           onDelete?.();
         }}
       >

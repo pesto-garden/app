@@ -14,7 +14,10 @@
     getNewNote,
     getNewTodoListFragment,
     createOrUpdateSetting,
-    getNewTodo
+    getNewTodo,
+
+    removeDocument
+
   } from "$lib/db";
   import type { MangoQuerySelector } from "rxdb";
 
@@ -273,7 +276,7 @@
                       autofocus={autofocusKey === item.id}
                       note={item.note}
                       on:delete={(e) => {
-                        e.detail.note.incrementalRemove();
+                        removeDocument(e.detail.note);
                       }}
                     />
                     {#if item[SHADOW_ITEM_MARKER_PROPERTY_NAME]}

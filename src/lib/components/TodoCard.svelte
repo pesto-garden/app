@@ -8,7 +8,8 @@
     type TodolistType,
     getNoteUpdateData,
     formatDateShort,
-    globals
+    globals,
+    removeDocument
   } from "$lib/db";
   import { createEventDispatcher } from "svelte";
   import IconaMoonMoveThin from "virtual:icons/iconamoon/move-thin";
@@ -46,7 +47,7 @@
     note.$.subscribe(async (newNote: DocumentDocument) => {
       if (!note.title && isEmpty(newNote.fragments) && !deleted) {
         deleted = true;
-        await newNote.incrementalRemove();
+        await removeDocument(newNote);
       }
     })
   ];
