@@ -377,6 +377,7 @@ export const documentConflictHandler: RxConflictHandler<any> = {
      * In your custom conflict handler you likely want to merge properties
      * of the realMasterState and the newDocumentState instead.
      */
+    console.log("Resolving conflict", i.realMasterState, i)
     return i.realMasterState;
 }
 } 
