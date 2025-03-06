@@ -9,8 +9,8 @@
   let { children, isLoading = $bindable() } = $props();
 </script>
 
+{#if isLoading}
 <div class="flex__column flex__align-center p__block-2">
-  {#if isLoading}
     <IconaMoonSettings
       role="presentation"
       alt=""
@@ -19,5 +19,5 @@
       class="rotating icon__size-4"
     />
     <em>{@render children?.()}</em>
-  {/if}
-</div>
+  </div>
+{/if}
