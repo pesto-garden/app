@@ -16,7 +16,10 @@
   --badge-color: var(--text-color);
   --text-color: rgba(44, 44, 44, 1);
   --text-discrete-color: rgba(125, 125, 125, 1);
+  --html-font-size: 18px;
+  --html-font-size-narrow-increment: 4px;
   --page-header-font-size: 1.1rem;
+  --nav-font-size: 0.9rem;
   --font-family: Helvetica, sans-serif;
   --background-color: white;
   --background-secondary-color: #f7fbf7;
@@ -34,6 +37,12 @@
   --box-shadow-secondary: 2px 2px 1px rgba(55, 55, 55, 0.15);
   --card-box-shadow: var(--box-shadow-secondary);
   --card-border-radius: 5px;
+}
+
+@media only screen and (max-width: 700px) {
+  :root {
+    font-size: calc(var(--html-font-size) + var(--html-font-size-narrow-increment));
+  }
 }
 
 @font-face {
