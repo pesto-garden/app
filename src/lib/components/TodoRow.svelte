@@ -36,7 +36,7 @@
 </script>
 
 <div class="flex__row flex__align-start">
-  <div>
+  <div class="flex__row flex__align-start p__block-1">
     {#key todo.text.trim() + todo.done}
       <input
         type="checkbox"
@@ -68,11 +68,11 @@
       {onfocus}
     ></textarea>
   {:else}
-    <label class="flex__grow flow m__block-2" for={`todo-${id}-done`}>
+    <label class="flex__grow flow" for={`todo-${id}-done`}>
       {@html renderMarkdown(todo.text || "")}
     </label>
   {/if}
-  {#if showDelete}
+  {#if editText && showDelete}
     <button
       class="button__icon"
       onclick={preventDefault((e) => {

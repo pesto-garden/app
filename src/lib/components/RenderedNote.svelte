@@ -26,9 +26,9 @@
   {/if}
 
   {#if note.title?.trim()}
-    <p>
-      <time datetime={note.created_at}>{formatDate(note.created_at)}</time>
-    </p>
+    <div>
+      <time class="text__size-small" datetime={note.created_at}>{formatDate(note.created_at)}</time>
+    </div>
   {/if}
 
   {#if note.fragments.form}

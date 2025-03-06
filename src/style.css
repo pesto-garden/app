@@ -16,10 +16,12 @@
   --badge-color: var(--text-color);
   --text-color: rgba(44, 44, 44, 1);
   --text-discrete-color: rgba(125, 125, 125, 1);
-  --html-font-size: 18px;
-  --html-font-size-narrow-increment: 4px;
+  --html-base-font-size: 16px;
+  --html-font-size: var(--html-base-font-size);
+  --html-font-size-narrow-increment: 2px;
+  --font-size-small: 0.9rem;
   --page-header-font-size: 1.1rem;
-  --nav-font-size: 0.9rem;
+  --nav-font-size: 1rem;
   --font-family: Helvetica, sans-serif;
   --background-color: white;
   --background-secondary-color: #f7fbf7;
@@ -37,11 +39,13 @@
   --box-shadow-secondary: 2px 2px 1px rgba(55, 55, 55, 0.15);
   --card-box-shadow: var(--box-shadow-secondary);
   --card-border-radius: 5px;
+  --flow-space: var(--space-2);
 }
 
 @media only screen and (max-width: 700px) {
   :root {
-    font-size: calc(var(--html-font-size) + var(--html-font-size-narrow-increment));
+    --flow-space: var(--space-2);
+    --html-font-size: calc(var(--html-base-font-size) + var(--html-font-size-narrow-increment));
   }
 }
 
@@ -180,7 +184,7 @@ select {
 
 html {
   font-family: "Roboto", sans-serif;
-  font-size: 18px;
+  font-size: var(--html-font-size);
 }
 body {
   background: var(--background-color);
@@ -544,7 +548,7 @@ input[type="submit"]:hover {
 }
 
 .button__size-1 {
-  font-size: 80%;
+  font-size: var(--font-size-small);
 }
 
 .button__icon {
@@ -591,7 +595,7 @@ textarea {
     font-weight: normal;
   }
   .form__help {
-    font-size: 80%;
+    font-size: var(--font-size-small);
     font-style: italic;
   }
   input:not([type="checkbox"]),
@@ -608,9 +612,7 @@ form {
 .builder__field {
   --flow-space: var(--space-2);
 }
-.app > nav {
-  border-block-end: var(--layout-separator);
-}
+
 a:visited svg:only-child {
   color: initial;
 }
@@ -618,6 +620,7 @@ a:visited svg:only-child {
 .nav__main {
   display: flex;
   flex-direction: column;
+  font-size: var(--nav-font-size);
   header {
     padding-block: var(--space-1);
     padding-inline-start: var(--space-1);
@@ -683,18 +686,18 @@ a:visited svg:only-child {
 
 .todolist {
   list-style: none;
+  margin-block-end: 0;
   margin-inline-start: 0;
   padding-inline-start: 0;
 }
 .todolist li {
-  --flow-space: var(--space-1);
-  margin-block: var(--space-1);
-
+  padding-block-start: var(--space-2);
   button,
   textarea,
   .flow {
     margin: 0;
-    padding: var(--space-1);
+    /* alignment hack */
+    padding-block-start: 1px;
   }
 
   textarea {
@@ -735,10 +738,6 @@ input[type="text"].input__discrete {
 }
 .flow > *:first-child {
   margin-block-start: 0;
-}
-
-.prose {
-  --flow-space: var(--space-3);
 }
 
 .mirror__container {
@@ -916,7 +915,7 @@ table {
     position: absolute;
     top: 2rem;
     background: white;
-    min-width: 10rem;
+    min-width: 12rem;
     list-style: none;
     margin: 0;
     padding: 0;
@@ -927,7 +926,6 @@ table {
     width: 100%;
     display: block;
     text-align: left;
-    font-size: 0.8rem;
     padding: var(--space-2);
     &:hover {
       background-color: var(--primary-color);
@@ -954,8 +952,8 @@ emoji-picker {
 }
 
 
-.text__size-80 {
-  font-size: 80%;
+.text__size-small {
+  font-size: var(--font-size-small);
 }
 
 @media print {

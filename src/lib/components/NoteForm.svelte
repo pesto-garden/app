@@ -191,7 +191,7 @@
         {@render children?.()}
         {#if localNote?.modified_at}
           <TimeAgo 
-            class="text__discrete text__size-80" 
+            class="text__discrete text__size-small" 
             data-testid="note-saved-ago"
             date={localNote.modified_at} 
             anchor={$_("Enregistré %ago", "")}></TimeAgo>
