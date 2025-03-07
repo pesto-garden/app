@@ -850,7 +850,7 @@ dialog {
   }
   button[type="submit"] {
     float: inline-end;
-    margin: var(--space-2);
+    margin-block: var(--space-2);
   }
 }
 [data-layout="multi-columns"] {

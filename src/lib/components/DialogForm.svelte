@@ -67,21 +67,19 @@
         onsubmit(e);
       }}
     >
-      <div id="dialog-description">
-        <div class="p__inline-2 | flow">
-          {#if isOpen}
-            {@render children?.()}
-          {/if}
-        </div>
+      <div id="dialog-description" class="flow p__inline-3 p__block-3">
+        {#if isOpen}
+          {@render children?.()}
+        {/if}
+        <hr class="hidden" >
+        <button
+          type="submit"
+          onclick={(e) => {
+            dialog.close();
+            isOpen = false;
+          }}>{$_("Confirmer", "")}</button
+        >
       </div>
-      <hr />
-      <button
-        type="submit"
-        onclick={(e) => {
-          dialog.close();
-          isOpen = false;
-        }}>{$_("Confirmer", "")}</button
-      >
     </form>
   </div>
 </dialog>
