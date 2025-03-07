@@ -82,7 +82,7 @@
 
 <div class="wrapper" role="list" aria-live="polite" aria-busy={isLoading}>
   {#if !isLoading}
-    <header class="p__block-3 p__inline-3 | flex__row flex__align-center flex__justify-between">
+    <header class="p__block-3 p__inline-3 | flex__row flex__align-top flex__justify-between">
       <div class="flex__grow">
         {#if collection}
           <strong>
@@ -150,13 +150,15 @@
           </DialogForm>
           <br>
         {/if}
-        {#if matchingCount >= notes.length}
-          <span data-testid="matching-count">
+        <span data-testid="matching-count">
+          {#if matchingCount >= notes.length}
             {$_n(`1 note trouvée`, `%n notes trouvées`, matchingCount)}
-          </span>
-        {/if}
+          {:else}
+            &nbsp;
+          {/if}
+        </span>
       </div>
-      <div class="form__field">
+      <div class="form__field p__block-1">
         <select
           name="order"
           id="order"
