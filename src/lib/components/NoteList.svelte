@@ -24,9 +24,10 @@
     searchQuery: string;
     orderQuery: string;
     collection?: DocumentType;
+    onorderchange?: Function;
   }
 
-  let { searchQuery = $bindable(), orderQuery = $bindable(), collection }: Props = $props();
+  let { searchQuery = $bindable(), orderQuery = $bindable(), collection, onorderchange }: Props = $props();
 
   let notes: DocumentDocument[] = $state([]);
   let matchingCount: number = $state(0);
@@ -82,8 +83,8 @@
 <div class="wrapper" role="list" aria-live="polite" aria-busy={isLoading}>
   {#if !isLoading}
     <header class="p__block-3 p__inline-3 | flex__row flex__align-center flex__justify-between">
-      {#if collection}
-        <div class="flex__grow">
+      <div class="flex__grow">
+        {#if collection}
           <strong>
             {currentCollection.data.emoji || "📋️"}
             {currentCollection.title}
@@ -147,13 +148,31 @@
               )}
             </p>
           </DialogForm>
-        </div>
-      {/if}
-      {#if matchingCount >= notes.length}
-        <span data-testid="matching-count">
-          {$_n(`1 note trouvée`, `%n notes trouvées`, matchingCount)}
-        </span>
-      {/if}
+          <br>
+        {/if}
+        {#if matchingCount >= notes.length}
+          <span data-testid="matching-count">
+            {$_n(`1 note trouvée`, `%n notes trouvées`, matchingCount)}
+          </span>
+        {/if}
+      </div>
+      <div class="form__field">
+        <select
+          name="order"
+          id="order"
+          value={orderQuery}
+          aria-label={$_("Trier par", "")}
+          title={$_("Trier par", "")}
+          oninput={(e) => {
+            onorderchange?.(e.target.value)
+          }}
+        >
+          <option value="id:desc">{$_("Date ↓", "")}</option> 
+          <option value="id:asc">{$_("Date ↑", "")}</option> 
+          <option value="modified_at:desc">{$_("Modifié ↓", "")}</option> 
+          <option value="modified_at:asc">{$_("Modifié ↑", "")}</option> 
+         </select>
+      </div>
     </header>
   {/if}
   <LoadingState {isLoading}>{$_("Chargement des notes…", "")}</LoadingState>
@@ -171,6 +190,7 @@
   {#if notes.length < matchingCount && !isLoading}
     <div class="flex__row flex__center m__block-4 hide-for-print">
       <button
+        class="button__secondary"
         onclick={async (e) => {
           let newNotes = await globals.db.documents
             .find({

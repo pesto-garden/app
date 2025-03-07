@@ -21,7 +21,8 @@
   function triggerSearch() {
     let params = updateURLParam($page.url.searchParams, [
       { param: "q", value: searchQuery },
-      { param: "action", value: "search" }
+      { param: "action", value: "search" },
+      { param: "o", value: orderQuery }
     ]);
     goto(`?${params.toString()}`);
   }
@@ -86,7 +87,14 @@
 
     <div class="scroll">
       {#key data.collection?.id + searchQuery}
-        <NoteList collection={data.collection} {searchQuery} {orderQuery} />
+        <NoteList 
+          collection={data.collection}
+          {searchQuery}
+          {orderQuery}
+          onorderchange={(o) => {
+            orderQuery = o
+            triggerSearch()
+          }} />
       {/key}
     </div>
   </div>
