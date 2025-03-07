@@ -107,7 +107,7 @@
           noteFormKey++;
         }}
       >
-        <button type="submit"> {$_("Rédiger une nouvelle note", "")} </button>
+        <button class="button__secondary" type="submit"> {$_("Rédiger une nouvelle note", "")} </button>
       </NoteForm>
     {/key}
   </section>

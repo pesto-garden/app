@@ -11,7 +11,7 @@
   <NoteForm note={data.note || null}>
     <a
       href="/my"
-      class="button"
+      class="button button__secondary"
       on:delete={(e) => {
         key++;
       }}

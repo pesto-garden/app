@@ -19,7 +19,7 @@
   <button
     aria-expanded={expanded}
     aria-controls={id}
-    class="button__discrete button__outlined hide-for-print"
+    class="button__secondary hide-for-print"
     type="button"
     onclick={() => (expanded = !expanded)}
   >

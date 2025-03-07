@@ -13,6 +13,7 @@
 
   --primary-color: var(--color-2);
   --accent-color: var(--color-3);
+  --discrete-color: #eeeeee;
   --badge-color: var(--text-color);
   --text-color: rgba(44, 44, 44, 1);
   --text-discrete-color: rgba(125, 125, 125, 1);
@@ -530,6 +531,9 @@ input[type="submit"] {
   &:not(.button__icon):hover {
     filter: brightness(95%);
   }
+  &.button__secondary {
+    --button-color: var(--discrete-color);
+  }
 }
 
 .button:hover,
@@ -563,14 +567,6 @@ input[type="submit"]:hover {
 .button__transparent {
   background: none;
   border: none;
-}
-.button__outlined {
-  background: none;
-  border: 2px solid var(--button-color, var(--primary-color));
-  color: var(--button-color, var(--primary-color));
-}
-.button__discrete {
-  --button-color: var(--text-discrete-color);
 }
 textarea {
   width: 100%;
