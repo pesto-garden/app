@@ -187,6 +187,7 @@
           localNote = e.detail.note;
         }}
       />
+      <hr class="hidden">
       <div class="flex__row flex__justify-between flex__align-center">
         {@render children?.()}
         {#if localNote?.modified_at}
