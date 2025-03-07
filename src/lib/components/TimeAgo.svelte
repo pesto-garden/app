@@ -14,7 +14,7 @@
   onMount(() => {
     interval = setInterval(() => {
       key += 1
-    }, 10000)
+    }, 30000)
   })
   onDestroy(() => {
     clearInterval(interval)
