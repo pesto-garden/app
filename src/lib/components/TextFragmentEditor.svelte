@@ -4,7 +4,7 @@
   import { onDestroy } from "svelte";
   import { type TextType } from "$lib/db";
   import { syncPropertiesWithExternalChanges, clearSubscriptions } from "$lib/ui";
-  import TextareaAutocomplete from "./TextareaAutocomplete.svelte";
+  import TextareaEditor from "./TextareaEditor.svelte";
   const dispatch = createEventDispatcher<{
     update: { fragment: TextType };
     delete: {};
@@ -38,7 +38,7 @@
 
 <div class="form__field">
   <label for={fieldId}>{$_("Contenu", "")}</label>
-  <TextareaAutocomplete
+  <TextareaEditor
     id={fieldId}
     onfocus={() => (focused = true)}
     onblur={() => (focused = false)}
@@ -46,5 +46,5 @@
     placeholder={$_("Quoi de neuf ?", "")}
     oninput={(e) => handleChange(e.target.value)}
     value={content}
-  ></TextareaAutocomplete>
+  ></TextareaEditor>
 </div>

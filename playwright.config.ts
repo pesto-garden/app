@@ -76,8 +76,8 @@ export default defineConfig({
 
   /* Run your local dev server before starting the tests */
   webServer: {
-    command: 'yarn preview',
-    port: 4173,
+    command: process.env.SERVER === 'dev' ? 'yarn dev' : 'yarn preview',
+    port: process.env.SERVER === 'dev' ? 5173 : 4173,
     reuseExistingServer: !process.env.CI,
   },
 });

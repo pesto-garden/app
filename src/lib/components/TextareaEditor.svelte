@@ -2,7 +2,6 @@
   // based on https://phuoc.ng/collection/mirror-a-text-area/add-autocomplete-to-your-text-area/
   import { globals } from "$lib/db";
   import { clearSubscriptions, signToType, parseTags } from "$lib/ui";
-  import { elementAt } from "rxjs";
   import { onMount, onDestroy, tick } from "svelte";
 
   import type { HTMLBaseAttributes } from "svelte/elements";
@@ -180,6 +179,52 @@
     }
   }
   const clamp = (min, value, max) => Math.min(Math.max(min, value), max);
+
+  const insertLine = (textarea, text: string) => {
+    const position = textarea.selectionStart;
+    textarea.setRangeText(text)
+    setTimeout(() => {
+      textarea.selectionStart = position + text.length + 1;
+    })
+  };
+
+  const removeChars = (textarea, count: number = 0) => {
+    const position = textarea.selectionStart;
+
+    // Get the text before and after the cursor position
+    const before = textarea.value.substring(0, position);
+    const after = textarea.value.substring(position, textarea.value.length);
+
+    // Insert the new text at the cursor position
+    textarea.value = before.slice(0, -count) + after;
+
+    // Set the cursor position to after the newly inserted text
+    textarea.selectionStart = textarea.selectionEnd = position - count;
+  };
+
+  function getPreviousLines(textarea) {
+    return textarea.value.substr(0, textarea.selectionStart).split("\n");
+  }
+  function getPreviousLine(textarea) {
+    return getPreviousLines(textarea).slice(-1)[0] || ""
+  }
+  function updateMarkupAfterNewLine (textarea) {
+    let previousLine: string = getPreviousLine(textarea)
+    console.debug(`[editor] Previous line: ${previousLine}`)
+
+    if (!previousLine.trim()) {
+      return
+    }
+    if (previousLine.startsWith('- ') && previousLine.length > 2) {
+      console.debug("[editor] inserting unordered list item")
+      insertLine(textarea, '- ')
+    }
+    if (previousLine === '- ') {
+      console.debug("[editor] removing empty list element")
+      // we remove 3 chars to include the newline char
+      removeChars(textarea, 3 )
+    }
+  }
 </script>
 
 <div bind:this={container} class="mirror__container">
@@ -205,6 +250,9 @@
 
       const numSuggestions = matches.length;
       if (numSuggestions === 0) {
+        if (e.key === "Enter") {
+          updateMarkupAfterNewLine(e.target)
+        }
         return;
       }
       if (e.key === "Enter" && currentSuggestionIndex === -1) {

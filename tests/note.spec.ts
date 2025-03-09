@@ -182,3 +182,20 @@ test('hashtag autocompletion', async ({ page }) => {
 	await expect(page.getByTestId("autocomplete-option").locator("visible=true")).toHaveCount(0);
 	
 });
+
+
+test('note text editor unordered list', async ({ page }) => {
+	await page.goto('/my/notes/add');
+	const content = page.getByLabel('Contenu');
+	
+	// unordered list
+	await content.fill("- Bonjour");
+	await content.press("Enter");
+	
+	// a new dash should have been added
+	expect(content).toHaveValue(`- Bonjour\n- `)
+	
+	// new line on empty dash : removes the dash
+	await content.press("Enter");
+	expect(content).toHaveValue(`- Bonjour\n`)
+});
