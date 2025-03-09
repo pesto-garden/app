@@ -18,6 +18,7 @@
     type TodolistType,
     type Database
   } from "$lib/db";
+  import {forms} from '$lib/store-db'
   import { clearSubscriptions, getTodoListFromMarkdown } from "$lib/ui";
   import { createEventDispatcher, onDestroy } from "svelte";
   const dispatch = createEventDispatcher<{
@@ -123,10 +124,10 @@
     ></SelectDocument>
   </div>
 
-  {#if note?.fragments?.form?.id && globals.forms[note.fragments.form.id]}
+  {#if note?.fragments?.form?.id && forms[note.fragments.form.id]}
     <FormRendered
       elClass="flow"
-      form={globals.forms[note.fragments.form.id]}
+      form={forms[note.fragments.form.id]}
       id={note.fragments.form.id}
       ignoredEntryId={note.id}
       onsubmit={async (values: object) => {

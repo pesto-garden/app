@@ -451,13 +451,6 @@ export function loadFormsQuery() {
     selector: { type: "form" }
   });
 }
-export function observeLoadForms() {
-  loadFormsQuery().$.subscribe((documents) => {
-    for (const document of documents) {
-      globals.forms[document.data.id] = document.data;
-    }
-  });
-}
 
 export function launchReplications(uiState, db) {
   console.log("Launching replications…");

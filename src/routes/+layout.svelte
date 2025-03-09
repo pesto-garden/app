@@ -8,7 +8,7 @@
   import { languagesById, defaultLanguage } from "$lib/i18n";
   import { onMount } from "svelte";
 	import { title } from "$lib/store";
-
+  
   import { lang, parsedTranslations } from "$lib/i18n/stores";
   title.set("")
   /**

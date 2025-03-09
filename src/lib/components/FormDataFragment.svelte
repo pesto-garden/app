@@ -2,6 +2,7 @@
   import { onDestroy } from "svelte";
   import { type FormFragmentType, globals } from "$lib/db";
   import { syncPropertiesWithExternalChanges, clearSubscriptions } from "$lib/ui";
+  import {forms} from '$lib/store-db'
 
   interface Props {
     fragment: FormFragmentType;
@@ -12,7 +13,7 @@
   let fields: string[] = $state(Object.keys(fragment.data || {}));
   let annotations: string[] = $state(Object.keys(fragment.annotations || {}));
 
-  let form = globals.forms[fragment.id];
+  let form = forms[fragment.id];
   let fieldsById = {};
   form?.fields.forEach((f) => {
     fieldsById[f.id] = f;
@@ -26,7 +27,7 @@
 <table class="table__simpledata">
   <caption>
     <a href={`/my?q=form:${fragment.id}`}>
-      {globals.forms[fragment.id]?.name || fragment.id}
+      {forms[fragment.id]?.name || fragment.id}
     </a>
   </caption>
   <tbody>
