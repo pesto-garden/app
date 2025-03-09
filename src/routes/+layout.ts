@@ -6,6 +6,12 @@ export const ssr = false;
 export const prerender = false;
 
 export async function load() {
+  if (!window.SubtleCrypto) {
+    throw Error(
+      `Error: window.SubtleCrytpo is not available. If you are running a development environment, add 
+        ${location.protocol + '//' + location.host}
+      to chrome:flags/#unsafely-treat-insecure-origin-as-secure`)
+  }
   console.debug("Loading db…")
   const { db, uiState } = await getDb();
   console.debug("Db loaded!")
