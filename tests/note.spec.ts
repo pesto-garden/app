@@ -35,7 +35,7 @@ async function createNote(page: Page, params = {title: "", content: "" }) {
 
 test('home page has no notes', async ({ page }) => {
 	await page.goto('/');
-	await expect(page.getByText('0 notes trouvées')).toBeVisible();
+	await expect(page.getByText('journal est vide')).toBeVisible();
 });
 
 test('add note and render it as markdown', async ({ page }) => {

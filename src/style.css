@@ -534,6 +534,9 @@ input[type="submit"] {
   &.button__secondary {
     --button-color: var(--discrete-color);
   }
+  svg:not(:last-child) {
+    margin-inline-end: var(--space-1);
+  }
 }
 
 .button:hover,

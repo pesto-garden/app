@@ -6,11 +6,11 @@
     isLoading: boolean;
   }
 
-  let { children, isLoading = $bindable() } = $props();
+  let { children, isLoading = $bindable() }: Props = $props();
 </script>
 
 {#if isLoading}
-<div class="flex__column flex__align-center p__block-2">
+  <div class="flex__column flex__align-center p__block-2">
     <IconaMoonSettings
       role="presentation"
       alt=""

@@ -3,6 +3,7 @@
 
   import IconaMoonTrash from "virtual:icons/iconamoon/trash";
   import IconaMoonEdit from "virtual:icons/iconamoon/edit";
+  import IconaMoonSignPlusCircle from "virtual:icons/iconamoon/sign-plus-circle";
 
   import DialogForm from "$lib/components/DialogForm.svelte";
   import CollectionForm from "$lib/components/CollectionForm.svelte";
@@ -151,13 +152,14 @@
           <br>
         {/if}
         <span data-testid="matching-count">
-          {#if matchingCount >= notes.length}
+          {#if matchingCount >= notes.length && matchingCount > 0}
             {$_n(`1 note trouvée`, `%n notes trouvées`, matchingCount)}
           {:else}
             &nbsp;
           {/if}
         </span>
       </div>
+      {#if matchingCount > 0}
       <div class="form__field p__block-1">
         <select
           name="order"
@@ -175,9 +177,29 @@
           <option value="modified_at:asc">{$_("Modifié ↑", "")}</option> 
          </select>
       </div>
+      {/if}
     </header>
   {/if}
   <LoadingState {isLoading}>{$_("Chargement des notes…", "")}</LoadingState>
+  {#if matchingCount === 0 && !isLoading}
+    <div class="flex__column flex__align-center p__block-1 flow">
+      {#if searchQuery}
+        <p>{$_("Aucune ne correspond à votre recherche.", "")}</p>
+      {:else}
+        <p>{$_("Votre journal est vide, pour l'instant 😊", "")}</p>
+      {/if}
+      <a class="button" href="/my/notes/add">
+        <IconaMoonSignPlusCircle
+          role="presentation"
+          alt=""
+          height="none"
+          width="none"
+          class="icon__size-2"
+        />
+        <span>{$_("Ajouter une note", "")}</span>
+      </a>
+    </div>
+  {/if}
   {#each notes as note}
     {#key note._rev}
       <RenderedNote
