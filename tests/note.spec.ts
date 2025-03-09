@@ -183,7 +183,6 @@ test('hashtag autocompletion', async ({ page }) => {
 	
 });
 
-
 test('note text editor unordered list', async ({ page }) => {
 	await page.goto('/my/notes/add');
 	const content = page.getByLabel('Contenu');
@@ -198,4 +197,21 @@ test('note text editor unordered list', async ({ page }) => {
 	// new line on empty dash : removes the dash
 	await content.press("Enter");
 	expect(content).toHaveValue(`- Bonjour\n`)
+});
+
+
+test('note text editor ordered list', async ({ page }) => {
+	await page.goto('/my/notes/add');
+	const content = page.getByLabel('Contenu');
+	
+	// unordered list
+	await content.fill("1. Bonjour");
+	await content.press("Enter");
+	
+	// a new dash should have been added
+	expect(content).toHaveValue(`1. Bonjour\n2. `)
+	
+	// new line on empty dash : removes the dash
+	await content.press("Enter");
+	expect(content).toHaveValue(`1. Bonjour\n`)
 });

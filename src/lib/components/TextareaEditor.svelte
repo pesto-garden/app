@@ -215,14 +215,28 @@
     if (!previousLine.trim()) {
       return
     }
+    // unordered list
     if (previousLine.startsWith('- ') && previousLine.length > 2) {
       console.debug("[editor] inserting unordered list item")
       insertLine(textarea, '- ')
     }
     if (previousLine === '- ') {
       console.debug("[editor] removing empty list element")
-      // we remove 3 chars to include the newline char
       removeChars(textarea, 3 )
+    }
+    
+    // ordered list
+    const olRegex = new RegExp(/^(\d+). (.*)/)
+    let found = previousLine.match(olRegex)
+    if (found) {
+      if (found[2].trim()) {
+        let nextIdx = parseInt(found[1]) + 1
+        console.debug(`[editor] inserting ordered list item ${nextIdx}`)
+        insertLine(textarea, `${nextIdx}. `)
+      } else {
+        // we remove len(idx) + 2 chars to include the dot, the space and the newline char
+        removeChars(textarea, found[1].length + 1 + 1 + 1)  
+      }
     }
   }
 </script>
