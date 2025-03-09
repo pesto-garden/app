@@ -35,6 +35,10 @@
   let id: string = note ? note.id : buildUniqueId();
   let db = globals.db;
   let todolistKey = $state(0);
+  let localForms = $state({});
+  forms.subscribe(v => {
+    localForms = v
+  })
   let todolistFromText: TodolistType | null = $state(
     getTodoListFromMarkdown(note?.fragments?.text?.content || "", buildUniqueId)
   );
@@ -123,11 +127,10 @@
       }}
     ></SelectDocument>
   </div>
-
-  {#if note?.fragments?.form?.id && forms[note.fragments.form.id]}
+  {#if note?.fragments?.form?.id && localForms[note.fragments.form.id]}
     <FormRendered
       elClass="flow"
-      form={forms[note.fragments.form.id]}
+      form={localForms[note.fragments.form.id]}
       id={note.fragments.form.id}
       ignoredEntryId={note.id}
       onsubmit={async (values: object) => {

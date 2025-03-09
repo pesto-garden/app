@@ -12,12 +12,19 @@
 
   let fields: string[] = $state(Object.keys(fragment.data || {}));
   let annotations: string[] = $state(Object.keys(fragment.annotations || {}));
-
-  let form = forms[fragment.id];
+  let localForms = $state({})
+  forms.subscribe(v => {
+    localForms = v
+  })
+  let form
   let fieldsById = {};
-  form?.fields.forEach((f) => {
-    fieldsById[f.id] = f;
-  });
+  $effect(() => {
+    form = forms[fragment.id];
+    form?.fields.forEach((f) => {
+      fieldsById[f.id] = f;
+    });
+
+  })
   // let subscriptions = [
   //   syncPropertiesWithExternalChanges(fragment.content$, (v) => {content = v})
   // ]
