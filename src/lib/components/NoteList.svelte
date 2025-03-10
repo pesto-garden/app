@@ -186,10 +186,10 @@
     </header>
   {/if}
   <LoadingState {isLoading}>{$_("Chargement des notes…", "")}</LoadingState>
-  {#if matchingCount === 0 && !isLoading}
+  {#if notes.length === 0 && !isLoading}
     <div class="flex__column flex__align-center p__block-1 flow">
       {#if searchQuery}
-        <p>{$_("Aucune ne correspond à votre recherche.", "")}</p>
+        <p>{$_("Aucune note ne correspond à votre recherche.", "")}</p>
       {:else}
         <p>{$_("Votre journal est vide, pour l'instant 😊", "")}</p>
       {/if}

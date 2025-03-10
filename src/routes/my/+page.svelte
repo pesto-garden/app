@@ -43,7 +43,7 @@
   });
 </script>
 
-<main class="flex__grow">
+<main class="flex__grow background__secondary">
   <div class="with_sticky_header">
     <header class="hide-for-print">
       <div class="wrapper flex__row flex__align-center">
@@ -87,7 +87,7 @@
       </div>
     </header>
 
-    <div class="scroll background__secondary">
+    <div class="scroll">
       {#key data.collection?.id + searchQuery}
         <NoteList
           collection={data.collection}
