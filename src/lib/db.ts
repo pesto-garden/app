@@ -366,37 +366,37 @@ export type PushPullConfig = {
 };
 
 export const documentConflictHandler: RxConflictHandler<any> = {
-  isEqual (a, b) {
-    return a.modified_at && b.modified_at && a.modified_at === b.modified_at
+  isEqual(a, b) {
+    return a.modified_at && b.modified_at && a.modified_at === b.modified_at;
   },
   resolve(i) {
     /**
      * The default conflict handler will always
      * drop the fork state and use the master state instead.
-     * 
+     *
      * In your custom conflict handler you likely want to merge properties
      * of the realMasterState and the newDocumentState instead.
      */
-    let doc
+    let doc;
     if (i.newDocumentState.modified_at > i.realMasterState.modified_at) {
-      console.log("Returning new document state, it's more recent")
-      doc = i.newDocumentState
-    } else if (i.realMasterState.content && i.realMasterState.content.startsWith('{')) {
+      console.log("Returning new document state, it's more recent");
+      doc = i.newDocumentState;
+    } else if (i.realMasterState.content && i.realMasterState.content.startsWith("{")) {
       // conflict with the JSON version from the server
-      console.log("Returning JSON parsed master document state, it's more recent")
-      doc = JSON.parse(i.realMasterState.content)
+      console.log("Returning JSON parsed master document state, it's more recent");
+      doc = JSON.parse(i.realMasterState.content);
     } else {
-      console.log("Returning master state as is")
-      doc = i.realMasterState
+      console.log("Returning master state as is");
+      doc = i.realMasterState;
     }
     if (i.newDocumentState._deleted || i.realMasterState._deleted) {
       // one of the documents was deleted, we mark it for deletion
-      console.log("Markding for deletion")
-      doc = {...doc, _deleted: true}
+      console.log("Markding for deletion");
+      doc = { ...doc, _deleted: true };
     }
     return doc;
   }
-} 
+};
 export async function getDb() {
   if (globals.db) {
     return globals;
@@ -404,9 +404,9 @@ export async function getDb() {
   let storage = getRxStorageDexie();
   if (dev) {
     const ajv = getAjv();
-    ajv.addFormat('date-time', {
-      type: 'string',
-      validate: v => v.includes('T'),
+    ajv.addFormat("date-time", {
+      type: "string",
+      validate: (v) => v.includes("T")
     });
     storage = wrappedValidateAjvStorage({
       storage
@@ -437,12 +437,12 @@ export async function getDb() {
 }
 
 export async function removeDocument(document: DocumentDocument) {
-  // we set the modified_at field before deletion to ensure 
+  // we set the modified_at field before deletion to ensure
   // deletion is propagated properly accross replication
   await document.incrementalUpdate({
-    $set: {modified_at: new Date().toISOString(), _deleted: true}
+    $set: { modified_at: new Date().toISOString(), _deleted: true }
   });
-  return await document.incrementalRemove()
+  return await document.incrementalRemove();
 }
 
 export function loadFormsQuery() {
@@ -474,8 +474,7 @@ async function setupReplications(db: Database, current: [], config: AnyReplicati
     replicationState?.pull?._fetch.abort();
     if (replicationState.remove) {
       await replicationState?.remove();
-    }
-    else if (replicationState.cancel) {
+    } else if (replicationState.cancel) {
       await replicationState.cancel();
     }
   }
@@ -1000,7 +999,7 @@ export function formatTimeShort(d: string) {
 }
 
 export function timeAgo(d: string) {
-  const date = (d instanceof Date) ? d : new Date(d);
+  const date = d instanceof Date ? d : new Date(d);
   const formatter = new Intl.RelativeTimeFormat(LOCALE);
   const ranges = {
     years: 3600 * 24 * 365,

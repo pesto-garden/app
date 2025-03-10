@@ -12,7 +12,7 @@
   let note: DocumentDocument = $state(data.note);
   let viewQuery: "detail" | "edit" = $state("detail");
 
-  title.set(note.title || formatDate(note.created_at))
+  title.set(note.title || formatDate(note.created_at));
   $effect(() => {
     viewQuery = $page.url.searchParams.get("view") || "detail";
   });

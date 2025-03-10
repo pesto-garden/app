@@ -51,7 +51,7 @@ jobs:
 
       - name: Run Playwright tests
         run: yarn test:e2e
-  
+
       - uses: actions/upload-artifact@v4
         if: ${{ !cancelled() }}
         with:

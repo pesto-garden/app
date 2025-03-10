@@ -18,7 +18,7 @@
     type TodolistType,
     type Database
   } from "$lib/db";
-  import {forms} from '$lib/store-db'
+  import { forms } from "$lib/store-db";
   import { clearSubscriptions, getTodoListFromMarkdown } from "$lib/ui";
   import { createEventDispatcher, onDestroy } from "svelte";
   const dispatch = createEventDispatcher<{
@@ -36,9 +36,9 @@
   let db = globals.db;
   let todolistKey = $state(0);
   let localForms = $state({});
-  forms.subscribe(v => {
-    localForms = v
-  })
+  forms.subscribe((v) => {
+    localForms = v;
+  });
   let todolistFromText: TodolistType | null = $state(
     getTodoListFromMarkdown(note?.fragments?.text?.content || "", buildUniqueId)
   );

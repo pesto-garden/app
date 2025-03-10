@@ -2,7 +2,7 @@
   import { onDestroy } from "svelte";
   import { type FormFragmentType, globals } from "$lib/db";
   import { syncPropertiesWithExternalChanges, clearSubscriptions } from "$lib/ui";
-  import {forms} from '$lib/store-db'
+  import { forms } from "$lib/store-db";
 
   interface Props {
     fragment: FormFragmentType;
@@ -12,19 +12,18 @@
 
   let fields: string[] = $state(Object.keys(fragment.data || {}));
   let annotations: string[] = $state(Object.keys(fragment.annotations || {}));
-  let localForms = $state({})
-  forms.subscribe(v => {
-    localForms = v
-  })
-  let form
+  let localForms = $state({});
+  forms.subscribe((v) => {
+    localForms = v;
+  });
+  let form;
   let fieldsById = {};
   $effect(() => {
     form = forms[fragment.id];
     form?.fields.forEach((f) => {
       fieldsById[f.id] = f;
     });
-
-  })
+  });
   // let subscriptions = [
   //   syncPropertiesWithExternalChanges(fragment.content$, (v) => {content = v})
   // ]

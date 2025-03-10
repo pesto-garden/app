@@ -5,7 +5,13 @@
   import FormBuilder from "$lib/components/FormBuilder.svelte";
   import DialogForm from "$lib/components/DialogForm.svelte";
   import cloneDeep from "lodash/cloneDeep";
-  import { type FormConfiguration, createOrUpdateForm, globals, getById, removeDocument} from "$lib/db";
+  import {
+    type FormConfiguration,
+    createOrUpdateForm,
+    globals,
+    getById,
+    removeDocument
+  } from "$lib/db";
 
   interface Props {
     children: import("svelte").Snippet;

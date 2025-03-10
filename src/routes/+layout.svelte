@@ -7,10 +7,10 @@
   import { globals } from "$lib/db";
   import { languagesById, defaultLanguage } from "$lib/i18n";
   import { onMount } from "svelte";
-	import { title } from "$lib/store";
-  
+  import { title } from "$lib/store";
+
   import { lang, parsedTranslations } from "$lib/i18n/stores";
-  title.set("")
+  title.set("");
   /**
    * @typedef {Object} Props
    * @property {import('svelte').Snippet} [children]
@@ -19,12 +19,12 @@
   /** @type {Props} */
   let { children } = $props();
 
-  let telemetryEnabled = $state(true)
- 
+  let telemetryEnabled = $state(true);
+
   afterNavigate(() => {
     globals.uiState.set("currentPage", () => null);
     if (telemetryEnabled) {
-      console.debug("Tracking page view")
+      console.debug("Tracking page view");
       trackRouteChange($page);
     }
   });
@@ -48,8 +48,8 @@
       $lang = defaultLanguage;
     }
     globals.uiState.get$("telemetryEnabled").subscribe((value) => {
-      telemetryEnabled = value === undefined ? true : value
-    })
+      telemetryEnabled = value === undefined ? true : value;
+    });
     if (dev) {
       console.warn("Will not register service worker in dev mode.");
     } else {
@@ -72,7 +72,7 @@
 </script>
 
 <svelte:head>
-	<title>{$title}</title>
+  <title>{$title}</title>
 </svelte:head>
 
 {@render children?.()}

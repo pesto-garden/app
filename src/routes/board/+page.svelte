@@ -15,16 +15,14 @@
     getNewTodoListFragment,
     createOrUpdateSetting,
     getNewTodo,
-
     removeDocument
-
   } from "$lib/db";
   import type { MangoQuerySelector } from "rxdb";
 
   import { flip } from "svelte/animate";
   import { dragHandle, dragHandleZone, SHADOW_ITEM_MARKER_PROPERTY_NAME } from "svelte-dnd-action";
   import { title } from "$lib/store";
-  title.set($_("Tableau", ""))
+  title.set($_("Tableau", ""));
   async function handleDndConsider(e, column: BoardColumn) {
     column.cards = e.detail.items;
   }

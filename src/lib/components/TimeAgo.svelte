@@ -8,23 +8,23 @@
     anchor?: string;
   }
 
-  let key = $state(0)
-  let interval = null
+  let key = $state(0);
+  let interval = null;
   let { date, anchor, ...restProps }: Props = $props();
   onMount(() => {
     interval = setInterval(() => {
-      key += 1
-    }, 30000)
-  })
+      key += 1;
+    }, 30000);
+  });
   onDestroy(() => {
-    clearInterval(interval)
-  })
+    clearInterval(interval);
+  });
 </script>
 
 {#key key}
   <time datetime={date} {...restProps}>
     {#if anchor}
-      {anchor.replace('%ago', timeAgo(date))}
+      {anchor.replace("%ago", timeAgo(date))}
     {:else}
       {timeAgo(date)}
     {/if}

@@ -16,7 +16,7 @@
     buildUniqueId,
     getNewFormFragment,
     getNoteUpdateData,
-    removeDocument,
+    removeDocument
   } from "$lib/db";
   import sortBy from "lodash/sortBy";
   import DialogForm from "./DialogForm.svelte";
@@ -177,7 +177,7 @@
     </div>
   </header>
   <form class="flow | scroll" onsubmit={(e) => onSubmitHandler?.(e)}>
-    <div class="wrapper p__inline-3  p__block-3">
+    <div class="wrapper p__inline-3 p__block-3">
       <FragmentEditor
         note={localNote}
         {columns}
@@ -187,15 +187,16 @@
           localNote = e.detail.note;
         }}
       />
-      <hr class="hidden">
+      <hr class="hidden" />
       <div class="flex__row flex__justify-between flex__align-center">
         {@render children?.()}
         {#if localNote?.modified_at}
-          <TimeAgo 
-            class="text__discrete text__size-small" 
+          <TimeAgo
+            class="text__discrete text__size-small"
             data-testid="note-saved-ago"
-            date={localNote.modified_at} 
-            anchor={$_("Enregistré %ago", "")}></TimeAgo>
+            date={localNote.modified_at}
+            anchor={$_("Enregistré %ago", "")}
+          ></TimeAgo>
         {/if}
       </div>
     </div>

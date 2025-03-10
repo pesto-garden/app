@@ -74,7 +74,7 @@
             title={$_("Synchroniser", "")}
             onclick={async (e) => {
               isSyncing = true;
-              launchReplications(globals.uiState, globals.db)
+              launchReplications(globals.uiState, globals.db);
               setTimeout(() => {
                 isSyncing = false;
               }, 1000);

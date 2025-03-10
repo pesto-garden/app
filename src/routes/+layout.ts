@@ -9,19 +9,20 @@ export async function load() {
   if (!window.SubtleCrypto) {
     throw Error(
       `Error: window.SubtleCrytpo is not available. If you are running a development environment, add 
-        ${location.protocol + '//' + location.host}
-      to chrome:flags/#unsafely-treat-insecure-origin-as-secure`)
+        ${location.protocol + "//" + location.host}
+      to chrome:flags/#unsafely-treat-insecure-origin-as-secure`
+    );
   }
-  console.debug("Loading db…")
+  console.debug("Loading db…");
   const { db, uiState } = await getDb();
-  console.debug("Db loaded!")
-  $db.set(db)
+  console.debug("Db loaded!");
+  $db.set(db);
   if ((await db?.collections.documents.migrationNeeded()) && window.location.pathname != "/") {
     await goto("/");
   }
   globals.db = db;
   globals.uiState = uiState;
-  let migrationNeeded = await db?.collections.documents.migrationNeeded()
+  let migrationNeeded = await db?.collections.documents.migrationNeeded();
   console.log("Migration needed: ", migrationNeeded, globals.db);
   if (!migrationNeeded) {
     launchReplications(globals.uiState, globals.db);

@@ -28,9 +28,9 @@
   }
   $effect(() => {
     if (data.collection?.id) {
-      title.set(data.collection.title)
+      title.set(data.collection.title);
     } else {
-      title.set($_("Notes", ""))
+      title.set($_("Notes", ""));
     }
     searchQuery = $page.url.searchParams.get("q") || "";
     orderQuery = $page.url.searchParams.get("o") || "id:desc";
@@ -87,14 +87,15 @@
 
     <div class="scroll">
       {#key data.collection?.id + searchQuery}
-        <NoteList 
+        <NoteList
           collection={data.collection}
           {searchQuery}
           {orderQuery}
           onorderchange={(o) => {
-            orderQuery = o
-            triggerSearch()
-          }} />
+            orderQuery = o;
+            triggerSearch();
+          }}
+        />
       {/key}
     </div>
   </div>
@@ -115,7 +116,9 @@
           noteFormKey++;
         }}
       >
-        <button class="button__secondary" type="submit"> {$_("Rédiger une nouvelle note", "")} </button>
+        <button class="button__secondary" type="submit">
+          {$_("Rédiger une nouvelle note", "")}
+        </button>
       </NoteForm>
     {/key}
   </section>

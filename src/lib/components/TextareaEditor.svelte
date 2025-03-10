@@ -182,10 +182,10 @@
 
   const insertLine = (textarea, text: string) => {
     const position = textarea.selectionStart;
-    textarea.setRangeText(text)
+    textarea.setRangeText(text);
     setTimeout(() => {
       textarea.selectionStart = position + text.length + 1;
-    })
+    });
   };
 
   const removeChars = (textarea, count: number = 0) => {
@@ -206,36 +206,36 @@
     return textarea.value.substr(0, textarea.selectionStart).split("\n");
   }
   function getPreviousLine(textarea) {
-    return getPreviousLines(textarea).slice(-1)[0] || ""
+    return getPreviousLines(textarea).slice(-1)[0] || "";
   }
-  function updateMarkupAfterNewLine (textarea) {
-    let previousLine: string = getPreviousLine(textarea)
-    console.debug(`[editor] Previous line: ${previousLine}`)
+  function updateMarkupAfterNewLine(textarea) {
+    let previousLine: string = getPreviousLine(textarea);
+    console.debug(`[editor] Previous line: ${previousLine}`);
 
     if (!previousLine.trim()) {
-      return
+      return;
     }
     // unordered list
-    if (previousLine.startsWith('- ') && previousLine.length > 2) {
-      console.debug("[editor] inserting unordered list item")
-      insertLine(textarea, '- ')
+    if (previousLine.startsWith("- ") && previousLine.length > 2) {
+      console.debug("[editor] inserting unordered list item");
+      insertLine(textarea, "- ");
     }
-    if (previousLine === '- ') {
-      console.debug("[editor] removing empty list element")
-      removeChars(textarea, 3 )
+    if (previousLine === "- ") {
+      console.debug("[editor] removing empty list element");
+      removeChars(textarea, 3);
     }
-    
+
     // ordered list
-    const olRegex = new RegExp(/^(\d+). (.*)/)
-    let found = previousLine.match(olRegex)
+    const olRegex = new RegExp(/^(\d+). (.*)/);
+    let found = previousLine.match(olRegex);
     if (found) {
       if (found[2].trim()) {
-        let nextIdx = parseInt(found[1]) + 1
-        console.debug(`[editor] inserting ordered list item ${nextIdx}`)
-        insertLine(textarea, `${nextIdx}. `)
+        let nextIdx = parseInt(found[1]) + 1;
+        console.debug(`[editor] inserting ordered list item ${nextIdx}`);
+        insertLine(textarea, `${nextIdx}. `);
       } else {
         // we remove len(idx) + 2 chars to include the dot, the space and the newline char
-        removeChars(textarea, found[1].length + 1 + 1 + 1)  
+        removeChars(textarea, found[1].length + 1 + 1 + 1);
       }
     }
   }
@@ -265,7 +265,7 @@
       const numSuggestions = matches.length;
       if (numSuggestions === 0) {
         if (e.key === "Enter") {
-          updateMarkupAfterNewLine(e.target)
+          updateMarkupAfterNewLine(e.target);
         }
         return;
       }
@@ -303,7 +303,12 @@
   </textarea>
 
   {#if matches.length > 0}
-    <ul bind:this={suggestions} class="mirror__suggestions" role="listbox" data-testid="autocomplete-list">
+    <ul
+      bind:this={suggestions}
+      class="mirror__suggestions"
+      role="listbox"
+      data-testid="autocomplete-list"
+    >
       {#each matches as match, i (i)}
         <li
           aria-posinset={i + 1}

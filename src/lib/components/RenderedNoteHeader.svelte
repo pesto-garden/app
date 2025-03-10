@@ -125,7 +125,7 @@
         title={$_("Supprimer cette note ?", "")}
         onsubmit={async (e: SubmitEvent) => {
           e.preventDefault();
-          removeDocument(note)
+          removeDocument(note);
           onDelete?.();
         }}
       >

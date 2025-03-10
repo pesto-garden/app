@@ -15,7 +15,7 @@
     getById,
     type DocumentType,
     getNoteSelector,
-    removeDocument,
+    removeDocument
   } from "$lib/db";
   import { clearSubscriptions } from "$lib/ui";
   import { onDestroy } from "svelte";
@@ -28,7 +28,12 @@
     onorderchange?: Function;
   }
 
-  let { searchQuery = $bindable(), orderQuery = $bindable(), collection, onorderchange }: Props = $props();
+  let {
+    searchQuery = $bindable(),
+    orderQuery = $bindable(),
+    collection,
+    onorderchange
+  }: Props = $props();
 
   let notes: DocumentDocument[] = $state([]);
   let matchingCount: number = $state(0);
@@ -149,7 +154,7 @@
               )}
             </p>
           </DialogForm>
-          <br>
+          <br />
         {/if}
         <span data-testid="matching-count">
           {#if matchingCount >= notes.length && matchingCount > 0}
@@ -160,23 +165,23 @@
         </span>
       </div>
       {#if matchingCount > 0}
-      <div class="form__field p__block-1">
-        <select
-          name="order"
-          id="order"
-          value={orderQuery}
-          aria-label={$_("Trier par", "")}
-          title={$_("Trier par", "")}
-          oninput={(e) => {
-            onorderchange?.(e.target.value)
-          }}
-        >
-          <option value="id:desc">{$_("Date ↓", "")}</option> 
-          <option value="id:asc">{$_("Date ↑", "")}</option> 
-          <option value="modified_at:desc">{$_("Modifié ↓", "")}</option> 
-          <option value="modified_at:asc">{$_("Modifié ↑", "")}</option> 
-         </select>
-      </div>
+        <div class="form__field p__block-1">
+          <select
+            name="order"
+            id="order"
+            value={orderQuery}
+            aria-label={$_("Trier par", "")}
+            title={$_("Trier par", "")}
+            oninput={(e) => {
+              onorderchange?.(e.target.value);
+            }}
+          >
+            <option value="id:desc">{$_("Date ↓", "")}</option>
+            <option value="id:asc">{$_("Date ↑", "")}</option>
+            <option value="modified_at:desc">{$_("Modifié ↓", "")}</option>
+            <option value="modified_at:asc">{$_("Modifié ↑", "")}</option>
+          </select>
+        </div>
       {/if}
     </header>
   {/if}
