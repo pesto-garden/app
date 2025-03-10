@@ -709,7 +709,7 @@ form {
     margin-inline: var(--space-2);
   }
   [data-current-page="true"] {
-    background: var(--logo-gradient);
+    background: var(--accent-color);
   }
 }
 
