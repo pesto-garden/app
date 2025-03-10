@@ -32,7 +32,7 @@
         }}
       />
     {:else}
-      <div class="with_sticky_header">
+      <div class="with_sticky_header background__secondary">
         {#key note._rev}
           <RenderedNoteHeader {note} pageHeader={true} onDelete={() => goto("/my")} />
         {/key}
@@ -43,7 +43,7 @@
               <RenderedNote
                 {note}
                 limitSize={false}
-                class="diary__note flow"
+                class="diary__note card flow"
                 onDelete={() => goto("/my")}
                 includeHeader={false}
               ></RenderedNote>

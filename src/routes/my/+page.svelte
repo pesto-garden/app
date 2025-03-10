@@ -87,7 +87,7 @@
       </div>
     </header>
 
-    <div class="scroll">
+    <div class="scroll background__secondary">
       {#key data.collection?.id + searchQuery}
         <NoteList
           collection={data.collection}

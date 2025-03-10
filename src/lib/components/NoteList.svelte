@@ -211,7 +211,7 @@
         {note}
         includeHeader={true}
         limitSize={true}
-        class="diary__note flow | p__block-2"
+        class="diary__note card flow | p__block-2"
         role="listitem"
       ></RenderedNote>
     {/key}

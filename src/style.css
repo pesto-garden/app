@@ -36,8 +36,8 @@
   --button-radius: 2px;
   --button-border: 1px solid rgb(120, 112, 112, 0.2);
   --dialog-backdrop: rgba(55, 55, 55, 0.7);
-  --box-shadow-secondary: 0px 0px 3px rgba(55, 55, 55, 0.5);
-  --box-shadow-secondary: 2px 2px 1px rgba(55, 55, 55, 0.15);
+  --box-shadow-primary: 0px 0px 5px rgba(55, 55, 55, 0.35);
+  --box-shadow-secondary: 3px 3px 7px rgba(100, 100, 100, 0.1);
   --card-box-shadow: var(--box-shadow-secondary);
   --card-border-radius: 5px;
   --flow-space: var(--space-2);
@@ -220,7 +220,7 @@ body {
     background-color: var(--header-background);
     padding-block: var(--space-1);
     z-index: 4;
-    border-bottom: var(--layout-separator);
+    box-shadow: var(--box-shadow-secondary);
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -486,6 +486,9 @@ header > h2 {
   font-size: var(--page-header-font-size);
 }
 
+h1 {
+  font-size: 125%;
+}
 h2 {
   font-size: 120%;
 }
@@ -820,7 +823,7 @@ input[type="text"].input__discrete {
   }
 }
 .diary__note[role="listitem"] {
-  border-bottom: var(--layout-separator);
+  margin-block-end: var(--space-3);
 }
 
 .background__secondary {
