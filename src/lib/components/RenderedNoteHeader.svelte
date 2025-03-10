@@ -24,7 +24,7 @@
       <MainNavigationToggle class="layout__multi-hidden" />
     {/if}
   
-    <h2 class="flex__grow m__block-0">
+    <h3 class="flex__grow m__block-0">
       <a href={`/my/notes/${note.id}`}>
         {#if note.title?.trim()}
           {note.title}
@@ -32,7 +32,7 @@
           <time datetime={note.created_at}>{formatDate(note.created_at)}</time>
         {/if}
       </a>
-    </h2>
+    </h3>
     <div>
 
       <a 

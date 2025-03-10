@@ -485,6 +485,19 @@ h6 {
 header > h2 {
   font-size: var(--page-header-font-size);
 }
+
+h2 {
+  font-size: 120%;
+}
+h3 {
+  font-size: 115%;
+}
+h4 {
+  font-size: 110%;
+}
+h5 {
+  font-size: 105%;
+}
 input,
 button,
 textarea,
