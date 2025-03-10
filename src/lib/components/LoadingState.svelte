@@ -17,6 +17,7 @@
       height="none"
       width="none"
       class="rotating icon__size-4"
+      data-testid="loading-state"
     />
     <em>{@render children?.()}</em>
   </div>

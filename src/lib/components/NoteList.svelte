@@ -156,7 +156,7 @@
           </DialogForm>
           <br />
         {/if}
-        <span data-testid="matching-count">
+        <span data-testid="matching-count" data-query={searchQuery}>
           {#if matchingCount >= notes.length && matchingCount > 0}
             {$_n(`1 note trouvée`, `%n notes trouvées`, matchingCount)}
           {:else}

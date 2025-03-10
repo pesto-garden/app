@@ -2,12 +2,13 @@ import { expect, test, type Page } from "@playwright/test";
 
 const DEFAULT_TIMEOUT = 200;
 
-async function searchComplete(page: Page, expected: number) {
-  await page
+async function searchComplete(page: Page, expected: number, query: string) {
+  let match = await page
     .getByTestId("matching-count")
     .locator("visible=true")
-    .getByText(String(expected))
-    .waitFor();
+  
+  await expect(match).toContainText(String(expected))
+  await expect(match).toHaveAttribute("data-query", query)
 }
 
 async function noteSaved(page: Page) {
@@ -31,7 +32,7 @@ async function createNote(page: Page, params = { title: "", content: "" }) {
     await title.fill(params.title);
   }
   if (params.content) {
-    let content = page.getByLabel("Contenu");
+    let content = page.locator("form").getByLabel("Contenu", {exact: true});
     await content.fill(params.content);
   }
   await noteSaved(page);
@@ -46,7 +47,7 @@ test("add note and render it as markdown", async ({ page }) => {
   await page.goto("/");
   await navigateTo(page, "Nouvelle note");
 
-  const content = page.getByLabel("Contenu");
+  const content = page.locator("form").getByLabel("Contenu", {exact: true});
 
   await content.fill("bonjour **le monde**");
   await noteSaved(page);
@@ -62,13 +63,13 @@ test("add note and edit it", async ({ page }) => {
   await navigateTo(page, "Toutes les notes");
 
   // now edit it
-  page.locator("article").getByTestId("dropdown-anchor").click();
-  page.locator("article").getByTestId("dropdown-content").getByText("Éditer cette note").click();
+  await page.locator("article").getByLabel("Éditer").click();
 
-  let content = page.getByLabel("Contenu");
+  let content = page.locator("form").getByLabel("Contenu", {exact: true});
 
   await content.fill("foo **bar**");
   await noteSaved(page);
+  await page.waitForTimeout(DEFAULT_TIMEOUT);
   await page.getByTitle("Voir cette note", { exact: true }).click();
   await page.waitForTimeout(DEFAULT_TIMEOUT);
 
@@ -83,13 +84,13 @@ test("search note", async ({ page }) => {
   await createNote(page, { content: "foo **bar**" });
 
   await navigateTo(page, "Toutes les notes");
-  await searchComplete(page, 2);
-
+  await searchComplete(page, 2, "");
+  
   let search = await page.locator(`input[type="search"]`);
   await search.focus();
   await search.fill("foo");
   await search.press("Enter");
-  await searchComplete(page, 1);
+  await searchComplete(page, 1, "foo");
 
   expect(await page.locator("article").count()).toBe(1);
 });
@@ -99,11 +100,13 @@ test("add note and delete it", async ({ page }) => {
 
   await navigateTo(page, "Toutes les notes");
   // now delete it
-  await page.locator("article").getByTestId("dropdown-anchor").click();
   await page
     .locator("article")
-    .getByTestId("dropdown-content")
-    .getByText("Supprimer", { exact: true })
+    .getByLabel("Éditer")
+    .click();
+  await page
+    .locator("header")
+    .getByLabel("Supprimer")
     .click();
   await page.getByTestId("dialog").locator("visible=true").getByText("Confirmer").click();
 
@@ -118,22 +121,18 @@ test("add note and fav/unfav it", async ({ page }) => {
 
   await navigateTo(page, "Toutes les notes");
 
-  await page.locator("article").getByTestId("dropdown-anchor").click();
   await page
     .locator("article")
-    .getByTestId("dropdown-content")
-    .getByText("Ajouter aux favoris", { exact: true })
+    .getByLabel("Ajouter aux favoris", { exact: true })
     .click();
 
   await navigateTo(page, "Favoris");
-  await searchComplete(page, 1);
+  await searchComplete(page, 1, "starred:true");
   expect(await page.locator("article").count()).toBe(1);
 
-  await page.locator("article").getByTestId("dropdown-anchor").click();
   await page
     .locator("article")
-    .getByTestId("dropdown-content")
-    .getByText("Retirer des favoris", { exact: true })
+    .getByLabel("Retirer des favoris", { exact: true })
     .click();
   expect(await page.locator("article").count()).toBe(0);
 });
@@ -143,22 +142,22 @@ test("hashtag rendering and search", async ({ page }) => {
   await createNote(page, { content: "#évènement -triste" });
 
   await navigateTo(page, "Toutes les notes");
-  await searchComplete(page, 2);
+  await searchComplete(page, 2, "");
 
   expect(await page.locator("article").count()).toBe(2);
 
   await page.locator("article").getByText("#évènement").first().click();
-  await searchComplete(page, 2);
+  await searchComplete(page, 2, "tag:évènement");
 
   expect(await page.locator("article").count()).toBe(2);
   expect(await page.locator(`input[type="search"]`)).toHaveValue("tag:évènement");
 
   await navigateTo(page, "Toutes les notes");
-  await searchComplete(page, 2);
+  await searchComplete(page, 2, "");
   expect(await page.locator("article").count()).toBe(2);
 
   await page.locator("article").getByText("-triste").first().click();
-  await searchComplete(page, 1);
+  await searchComplete(page, 1, "tag:triste");
 
   expect(await page.locator("article").count()).toBe(1);
   expect(await page.locator(`input[type="search"]`)).toHaveValue("tag:triste");
@@ -168,7 +167,7 @@ test("hashtag autocompletion", async ({ page }) => {
   await createNote(page, { content: "#évènement +joyeux #idée #idéal #autre" });
 
   await navigateTo(page, "Nouvelle note");
-  const content = page.getByLabel("Contenu");
+  const content = page.locator("form").getByLabel("Contenu", {exact: true});
 
   await content.fill("+j");
 
@@ -193,7 +192,7 @@ test("hashtag autocompletion", async ({ page }) => {
 
 test("note text editor unordered list", async ({ page }) => {
   await page.goto("/my/notes/add");
-  const content = page.getByLabel("Contenu");
+  const content = page.locator("form").getByLabel("Contenu", {exact: true});
 
   // unordered list
   await content.fill("- Bonjour");
@@ -209,7 +208,7 @@ test("note text editor unordered list", async ({ page }) => {
 
 test("note text editor ordered list", async ({ page }) => {
   await page.goto("/my/notes/add");
-  const content = page.getByLabel("Contenu");
+  const content = page.locator("form").getByLabel("Contenu", {exact: true});
 
   // unordered list
   await content.fill("1. Bonjour");
