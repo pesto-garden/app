@@ -211,8 +211,11 @@ body {
   flex-direction: column;
   min-height: 100%;
   min-width: 100%;
-  overflow: auto;
   position: relative;
+  > *:not(header) {
+    overflow: auto;
+
+  }
   > header {
     position: sticky;
     min-height: var(--page-header-height);
