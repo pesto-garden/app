@@ -178,7 +178,7 @@
       </div>
     </div>
   </header>
-  <form class="flow | scroll" onsubmit={(e) => onSubmitHandler?.(e)}>
+  <form class="flow | scroll | m__block-4 " onsubmit={(e) => onSubmitHandler?.(e)}>
     <div class="wrapper p__block-2">
       <FragmentEditor
         note={localNote}

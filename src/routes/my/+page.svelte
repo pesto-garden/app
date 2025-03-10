@@ -3,7 +3,6 @@
   import IconaMoonClose from "virtual:icons/iconamoon/close";
 
   import MainNavigationToggle from "$lib/components/MainNavigationToggle.svelte";
-  import NoteForm from "$lib/components/NoteForm.svelte";
   import NoteList from "$lib/components/NoteList.svelte";
   import { page } from "$app/stores";
   import { goto } from "$app/navigation";
@@ -11,12 +10,11 @@
   import { tick } from "svelte";
   import { title } from "$lib/store.js";
 
-  let { data, children } = $props();
+  let { data } = $props();
 
   let searchQuery = $state("");
   let orderQuery = $state("id:desc");
   let action = $state("");
-  let noteFormKey = $state(0);
   let searchInput: HTMLInputElement;
   function triggerSearch() {
     let params = updateURLParam($page.url.searchParams, [

@@ -241,7 +241,7 @@
           <h2 class="flex__grow">{$_("Réglages", "")}</h2>
         </div>
       </header>
-      <section class="flow | scroll">
+      <section class="flow | scroll | m__block-4">
         <div class="wrapper p__block-3">
           <div class="flow">
             <h1>Interface</h1>
