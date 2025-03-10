@@ -163,65 +163,68 @@
 <div class="my__layout">
   <MainNavigation />
   <main>
-    <div class="scroll__wrapper">
-      <header class="flex__row flex__justify-between flex__align-center p__inline-3">
-        <MainNavigationToggle class="layout__multi-hidden" />
-        <h2 class="flex__grow">{$_("Tableau", "")}</h2>
-        {#snippet settingsIcon()}
-          <IconaMoonSettings
-            role="presentation"
-            class=" icon__size-3"
-            height="none"
-            width="none"
-            alt=""
-          />
-        {/snippet}
+    <div class="with_sticky_header">
+      <header>
+        <div class="wrapper wrapper__fluid flex__row flex__justify-between flex__align-center">
 
-        <DialogForm
-          anchorClass="button__icon"
-          anchorLabel={$_("Réglages du tableau", "")}
-          anchor={settingsIcon}
-          title={$_("Réglages du tableau", "")}
-          onsubmit={async (e: SubmitEvent) => {
-            saveBoard();
-            e.preventDefault();
-            location.reload();
-          }}
-        >
-          {#each boardColumnsConfig as column, i (i)}
-            <div class="form__field">
-              <label for={`column-${i}`}>{$_("Colonne %0", "Tableau", [i + 1])}</label>
-              <input
-                type="text"
-                id={`column-${i}`}
-                name={`column-${i}`}
-                bind:value={boardColumnsConfig[i]}
-              />
-              {#if i < boardColumnsConfig.length - 1 && i > 0}
-                <button
-                  type="button"
-                  onclick={() => {
-                    boardColumnsConfig.splice(i, 1);
-                    boardColumnsConfig = [...boardColumnsConfig];
-                  }}>{$_("Supprimer", "")}</button
-                >
-              {/if}
-            </div>
-          {/each}
-          <button
-            type="button"
-            onclick={() => {
-              boardColumnsConfig = [
-                ...boardColumnsConfig.slice(0, boardColumnsConfig.length - 1),
-                "New column",
-                ...boardColumnsConfig.slice(-1)
-              ];
-            }}>{$_("Ajouter une colonne", "")}</button
+          <MainNavigationToggle class="layout__multi-hidden" />
+          <h2 class="flex__grow">{$_("Tableau", "")}</h2>
+          {#snippet settingsIcon()}
+            <IconaMoonSettings
+              role="presentation"
+              class=" icon__size-3"
+              height="none"
+              width="none"
+              alt=""
+            />
+          {/snippet}
+  
+          <DialogForm
+            anchorClass="button__icon"
+            anchorLabel={$_("Réglages du tableau", "")}
+            anchor={settingsIcon}
+            title={$_("Réglages du tableau", "")}
+            onsubmit={async (e: SubmitEvent) => {
+              saveBoard();
+              e.preventDefault();
+              location.reload();
+            }}
           >
-        </DialogForm>
+            {#each boardColumnsConfig as column, i (i)}
+              <div class="form__field">
+                <label for={`column-${i}`}>{$_("Colonne %0", "Tableau", [i + 1])}</label>
+                <input
+                  type="text"
+                  id={`column-${i}`}
+                  name={`column-${i}`}
+                  bind:value={boardColumnsConfig[i]}
+                />
+                {#if i < boardColumnsConfig.length - 1 && i > 0}
+                  <button
+                    type="button"
+                    onclick={() => {
+                      boardColumnsConfig.splice(i, 1);
+                      boardColumnsConfig = [...boardColumnsConfig];
+                    }}>{$_("Supprimer", "")}</button
+                  >
+                {/if}
+              </div>
+            {/each}
+            <button
+              type="button"
+              onclick={() => {
+                boardColumnsConfig = [
+                  ...boardColumnsConfig.slice(0, boardColumnsConfig.length - 1),
+                  "New column",
+                  ...boardColumnsConfig.slice(-1)
+                ];
+              }}>{$_("Ajouter une colonne", "")}</button
+            >
+          </DialogForm>
+        </div>
       </header>
       <div class="scroll background__secondary">
-        <div class="flex__row | board">
+        <div class="flex__row | wrapper wrapper__fluid">
           {#each columns as column}
             <section
               class="flex__column | board__column"

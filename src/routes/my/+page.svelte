@@ -44,45 +44,47 @@
 </script>
 
 <main class="flex__grow">
-  <div class="scroll__wrapper">
-    <header class="p__inline-3 hide-for-print">
-      <MainNavigationToggle class="layout__multi-hidden" />
-      <input
-        bind:this={searchInput}
-        class="flex__grow"
-        type="search"
-        autocomplete="off"
-        name="search"
-        id="search"
-        placeholder={$_("Rechercher", "")}
-        value={searchQuery}
-        onkeydown={async (e) => {
-          if (e.key === "Enter") {
-            action = "";
-            searchQuery = e.target.value.trim();
-            triggerSearch();
-          }
-        }}
-      />
-      {#if searchQuery.trim()}
-        <button
-          type="button"
-          class="button__icon"
-          aria-label={$_("Effacer la recherche", "")}
-          onclick={() => {
-            searchQuery = "";
-            triggerSearch();
+  <div class="with_sticky_header">
+    <header class="hide-for-print">
+      <div class="wrapper flex__row flex__align-center">
+        <MainNavigationToggle class="layout__multi-hidden" />
+        <input
+          bind:this={searchInput}
+          class="flex__grow"
+          type="search"
+          autocomplete="off"
+          name="search"
+          id="search"
+          placeholder={$_("Rechercher", "")}
+          value={searchQuery}
+          onkeydown={async (e) => {
+            if (e.key === "Enter") {
+              action = "";
+              searchQuery = e.target.value.trim();
+              triggerSearch();
+            }
           }}
-        >
-          <IconaMoonClose
-            role="presentation"
-            class=" icon__size-3"
-            height="none"
-            width="none"
-            alt=""
-          />
-        </button>
-      {/if}
+        />
+        {#if searchQuery.trim()}
+          <button
+            type="button"
+            class="button__icon"
+            aria-label={$_("Effacer la recherche", "")}
+            onclick={() => {
+              searchQuery = "";
+              triggerSearch();
+            }}
+          >
+            <IconaMoonClose
+              role="presentation"
+              class=" icon__size-3"
+              height="none"
+              width="none"
+              alt=""
+            />
+          </button>
+        {/if}
+      </div>
     </header>
 
     <div class="scroll">
@@ -100,26 +102,3 @@
     </div>
   </div>
 </main>
-
-<aside>
-  <section>
-    {@render children?.()}
-    {#key noteFormKey + String(data.collection?.id)}
-      <NoteForm
-        note={null}
-        collection={data.collection?.id || null}
-        onSubmitHandler={(e) => {
-          noteFormKey++;
-          e.preventDefault();
-        }}
-        on:delete={(e) => {
-          noteFormKey++;
-        }}
-      >
-        <button class="button__secondary" type="submit">
-          {$_("Rédiger une nouvelle note", "")}
-        </button>
-      </NoteForm>
-    {/key}
-  </section>
-</aside>

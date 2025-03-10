@@ -41,12 +41,14 @@
   --card-box-shadow: var(--box-shadow-secondary);
   --card-border-radius: 5px;
   --flow-space: var(--space-2);
+  --wrapper-padding-inline: var(--space-3);
 }
 
 @media only screen and (max-width: 700px) {
   :root {
     --flow-space: var(--space-2);
     --html-font-size: calc(var(--html-base-font-size) + var(--html-font-size-narrow-increment));
+    --wrapper-padding-inline: var(--space-3);
   }
 }
 
@@ -193,44 +195,43 @@ body {
 
 .wrapper {
   margin-inline: auto;
+  padding-inline: var(--wrapper-padding-inline);
   max-width: 70ch;
+  width:100%;
+}
+.wrapper__fluid {
+  max-width: 100%;
+}
+.wrapper .wrapper {
+  padding-inline: 0;
 }
 
-.scroll__wrapper {
+.with_sticky_header {
   display: flex;
   flex-direction: column;
-  height: 100%;
-  width: 100%;
+  min-height: 100%;
+  min-width: 100%;
+  overflow: auto;
   position: relative;
   > header {
     position: sticky;
+    min-height: var(--page-header-height);
     top: 0;
     background-color: var(--header-background);
-    padding: var(--space-2);
+    padding-block: var(--space-1);
     z-index: 4;
     border-bottom: var(--layout-separator);
     display: flex;
     flex-direction: row;
     align-items: center;
-    min-height: var(--page-header-height);
     height: auto;
     > *:not(dialog) {
       margin-block: 0;
-      padding: var(--space-1);
     }
     h2 {
       font-size: var(--page-header-font-size);
-      padding: var(--space-2);
+      margin-block: 0;
     }
-  }
-  > .scroll {
-    flex: 1;
-    overflow-x: auto;
-    overflow-y: auto;
-    width: 100%;
-  }
-  > .scroll > *:last-child:not([type="submit"]) {
-    padding-block-end: var(--space-3);
   }
 }
 
@@ -318,6 +319,31 @@ body {
   display: none;
 }
 
+.flex__row_gap-1 {
+  row-gap: var(--space-1);
+}
+.flex__row_gap-2 {
+  row-gap: var(--space-2);
+}
+.flex__row_gap-3 {
+  row-gap: var(--space-3);
+}
+.flex__row_gap-4 {
+  row-gap: var(--space-4);
+}
+
+.flex__column_gap-1 {
+  column-gap: var(--space-1);
+}
+.flex__column_gap-2 {
+  column-gap: var(--space-2);
+}
+.flex__column_gap-3 {
+  column-gap: var(--space-3);
+}
+.flex__column_gap-4 {
+  column-gap: var(--space-4);
+}
 .flex__stacking-container {
   container-type: inline-size;
 }
@@ -612,9 +638,6 @@ form {
   --flow-space: var(--space-2);
 }
 
-a:visited svg:only-child {
-  color: initial;
-}
 
 .nav__main {
   display: flex;
@@ -975,7 +998,7 @@ emoji-picker {
     height: auto !important;
     overflow: auto;
   }
-  .scroll__wrapper {
+  .with_sticky_header {
     display: block !important;
     height: auto !important;
     position: static !important;

@@ -88,7 +88,7 @@
 
 <div class="wrapper" role="list" aria-live="polite" aria-busy={isLoading}>
   {#if !isLoading}
-    <header class="p__block-3 p__inline-3 | flex__row flex__align-top flex__justify-between">
+    <header class="p__block-3 | flex__row flex__align-top flex__justify-between">
       <div class="flex__grow">
         {#if collection}
           <strong>
@@ -211,7 +211,7 @@
         {note}
         includeHeader={true}
         limitSize={true}
-        class="diary__note flow | p__block-3 p__inline-3"
+        class="diary__note flow | p__block-2"
         role="listitem"
       ></RenderedNote>
     {/key}

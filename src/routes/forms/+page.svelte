@@ -55,42 +55,44 @@
 <div class="my__layout">
   <MainNavigation />
   <main>
-    <div class="scroll__wrapper">
-      <header class="p__inline-3 flex__row flex__justify-between flex__align-center">
-        <MainNavigationToggle class="layout__multi-hidden" />
-
-        <h2 class="flex__grow">{$_("Formulaires", "")}</h2>
-
-        {#snippet plusIcon()}
-          <IconaMoonSignPlusCircle
-            role="presentation"
-            class=" icon__size-3"
-            height="none"
-            width="none"
-            alt=""
-          />
-        {/snippet}
-        <DialogForm
-          anchorClass="button__icon"
-          anchor={plusIcon}
-          anchorLabel={$_("Ajouter un formulaire", "")}
-          title={$_("Ajouter un formulaire", "")}
-          onopen={() =>
-            (editedForm = {
-              id: getRandomId().toLowerCase(),
-              name: $_("Mon formulaire", ""),
-              fields: []
-            })}
-          onsubmit={async (e: SubmitEvent) => {
-            e.preventDefault();
-            await createOrUpdateForm(null, editedForm);
-            editedForm = null;
-          }}
-        >
-          {#if editedForm}
-            <FormBuilder bind:form={editedForm} />
-          {/if}
-        </DialogForm>
+    <div class="with_sticky_header">
+      <header>
+        <div class="wrapper wrapper__fluid flex__row flex__justify-between flex__align-center">
+          <MainNavigationToggle class="layout__multi-hidden" />
+  
+          <h2 class="flex__grow">{$_("Formulaires", "")}</h2>
+  
+          {#snippet plusIcon()}
+            <IconaMoonSignPlusCircle
+              role="presentation"
+              class=" icon__size-3"
+              height="none"
+              width="none"
+              alt=""
+            />
+          {/snippet}
+          <DialogForm
+            anchorClass="button__icon"
+            anchor={plusIcon}
+            anchorLabel={$_("Ajouter un formulaire", "")}
+            title={$_("Ajouter un formulaire", "")}
+            onopen={() =>
+              (editedForm = {
+                id: getRandomId().toLowerCase(),
+                name: $_("Mon formulaire", ""),
+                fields: []
+              })}
+            onsubmit={async (e: SubmitEvent) => {
+              e.preventDefault();
+              await createOrUpdateForm(null, editedForm);
+              editedForm = null;
+            }}
+          >
+            {#if editedForm}
+              <FormBuilder bind:form={editedForm} />
+            {/if}
+          </DialogForm>
+        </div>
       </header>
       <div class="scroll p__block-2 p__inline-2">
         <div class="grid grid__gap">

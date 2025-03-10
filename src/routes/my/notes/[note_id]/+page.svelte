@@ -20,37 +20,39 @@
 
 {#if note}
   <main class="flex__grow">
-    <div class="scroll__wrapper">
-      {#key note._rev}
-        <RenderedNoteHeader {note} pageHeader={true} onDelete={() => goto("/my")} />
-      {/key}
-
-      <div class="scroll">
+    {#if viewQuery === "edit"}
+      <NoteForm
+        {note}
+        collection={null}
+        on:update={(e) => {
+          note = e.detail.note;
+        }}
+        on:delete={(e) => {
+          goto("/my");
+        }}
+      />
+    {:else}
+      <div class="with_sticky_header">
         {#key note._rev}
-          <div class="wrapper p__inline-3 p__block-3">
-            <RenderedNote
-              {note}
-              limitSize={false}
-              class="diary__note flow"
-              onDelete={() => goto("/my")}
-              includeHeader={false}
-            ></RenderedNote>
-          </div>
+          <RenderedNoteHeader {note} pageHeader={true} onDelete={() => goto("/my")} />
         {/key}
+
+        <div class="scroll">
+          {#key note._rev}
+            <div class="wrapper p__inline-3 p__block-3">
+              <RenderedNote
+                {note}
+                limitSize={false}
+                class="diary__note flow"
+                onDelete={() => goto("/my")}
+                includeHeader={false}
+              ></RenderedNote>
+            </div>
+          {/key}
+        </div>
       </div>
-    </div>
+    {/if}
   </main>
-  <aside data-fullpage={viewQuery === "edit"}>
-    <NoteForm
-      {note}
-      on:update={(e) => {
-        note = e.detail.note;
-      }}
-      on:delete={(e) => {
-        goto("/my");
-      }}
-    />
-  </aside>
 {:else}
   <main class="wrapper p__inline-3 | flex__grow">
     <p>{$_("Cette note n'existe pas.", "")}</p>

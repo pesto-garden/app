@@ -42,28 +42,30 @@
   aria-describedby="dialog-description"
   data-testid="dialog"
 >
-  <div class="scroll__wrapper">
-    <header class="flex__row flex__justify-between flex__align-center p__inline-3">
-      <h2 id="dialog-title" class="m__block-0">{title}</h2>
-
-      <button
-        type="button"
-        class="button__icon"
-        aria-label={$_("Fermer la fenêtre", "")}
-        title={$_("Fermer la fenêtre", "")}
-        onclick={() => {
-          dialog.close();
-          isOpen = false;
-        }}
-      >
-        <IconaMoonClose
-          role="presentation"
-          class=" icon__size-3"
-          height="none"
-          width="none"
-          alt=""
-        />
-      </button>
+  <div class="with_sticky_header">
+    <header>
+      <div class="wrapper flex__row flex__justify-between flex__align-center">
+        <h2 id="dialog-title" class="m__block-0">{title}</h2>
+  
+        <button
+          type="button"
+          class="button__icon"
+          aria-label={$_("Fermer la fenêtre", "")}
+          title={$_("Fermer la fenêtre", "")}
+          onclick={() => {
+            dialog.close();
+            isOpen = false;
+          }}
+        >
+          <IconaMoonClose
+            role="presentation"
+            class=" icon__size-3"
+            height="none"
+            width="none"
+            alt=""
+          />
+        </button>
+      </div>
     </header>
     <form
       class="scroll"

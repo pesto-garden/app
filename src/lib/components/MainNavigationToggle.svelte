@@ -22,7 +22,7 @@
 
 <button
   type="button"
-  class={"button__transparent button__icon " + restProps.class || ""}
+  class={"button__transparent p__block-1 p__inline-1 button__icon " + restProps.class || ""}
   data-testid="menu-toggle"
   aria-label={sidebarFullpage
     ? $_("Fermer le menu principal", "")
@@ -36,8 +36,8 @@
   }}
 >
   {#if sidebarFullpage}
-    <IconaMoonClose role="presentation" alt="" />
+    <IconaMoonClose class="icon__size-3" role="presentation" alt="" />
   {:else}
-    <IconaMoonMenuBurgerHorizontal role="presentation" alt="" />
+    <IconaMoonMenuBurgerHorizontal class="icon__size-3" role="presentation" alt="" />
   {/if}
 </button>

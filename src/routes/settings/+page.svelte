@@ -234,13 +234,15 @@
 <div class="my__layout">
   <MainNavigation />
   <main>
-    <div class="scroll__wrapper">
-      <header class="flex__row flex__justify-between flex__align-center p__inline-3">
-        <MainNavigationToggle class="layout__multi-hidden" />
-        <h2 class="flex__grow">{$_("Réglages", "")}</h2>
+    <div class="with_sticky_header">
+      <header>
+        <div class="wrapper flex__row flex__justify-between flex__align-center">
+          <MainNavigationToggle class="layout__multi-hidden" />
+          <h2 class="flex__grow">{$_("Réglages", "")}</h2>
+        </div>
       </header>
       <section class="flow | scroll">
-        <div class="wrapper p__inline-3">
+        <div class="wrapper p__block-3">
           <div class="flow">
             <h1>Interface</h1>
             <div class="form__field">

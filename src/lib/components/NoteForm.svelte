@@ -74,110 +74,112 @@
   onDestroy(clearSubscriptions(subscriptions));
 </script>
 
-<div class="scroll__wrapper">
-  <header class="flex__row flex__justify-between flex__align-center p__inline-3">
-    <MainNavigationToggle class="layout__multi-hidden" />
-    <h2 class="flex__grow">
-      {#if localNote}
-        {$_("Éditer cette note", "")}
-      {:else}
-        {$_("Nouvelle note", "")}
-      {/if}
-    </h2>
-
-    <div>
-      {#if localNote}
-        <a
-          class="button__icon button layout__multi-hidden"
-          href={`/my/notes/${localNote.id}?view=detail`}
-          aria-label={$_("Voir cette note", "")}
-          title={$_("Voir cette note", "")}
-        >
-          <IconaMoonEye
-            role="presentation"
-            alt=""
-            class=" icon__size-3"
-            height="none"
-            width="none"
-          />
-        </a>
-      {/if}
-      {#if forms.length > 0}
-        {#snippet formIcon()}
-          <IconaMoonFileDocument
-            role="presentation"
-            class=" icon__size-3"
-            height="none"
-            width="none"
-            alt=""
-          />
-        {/snippet}
-        <DialogForm
-          anchorClass="button__icon"
-          anchorLabel={$_("Ajouter un formulaire", "")}
-          anchor={formIcon}
-          title={$_("Ajouter un formulaire", "")}
-          onsubmit={async (e: SubmitEvent) => {
-            if (!localNote) {
-              let noteData = getNewNote();
-              noteData.id = buildUniqueId();
-              localNote = await globals.db.documents.insert(noteData);
-            }
-            let updateData = {
-              fragments: { ...(localNote.fragments || {}) }
-            };
-            if (selectedForm) {
-              updateData.fragments.form = getNewFormFragment(selectedForm, {}, {});
-            } else {
-              updateData.fragments.form = undefined;
-            }
-            await localNote.incrementalUpdate({
-              $set: getNoteUpdateData(localNote, updateData)
-            });
-            localNote = await localNote.getLatest();
-            e.preventDefault();
-          }}
-        >
-          <div class="form__field">
-            <label for="form-id">{$_("Formulaire", "")}</label>
-            <select name="form-id" id="form-id" bind:value={selectedForm}>
-              <option value={undefined}>---</option>
-              {#each forms as form}
-                <option value={form.data.id}>{form.data.name}</option>
-              {/each}
-            </select>
-          </div>
-          <p>{$_("Attacher ce formulaire à la note.", "")}</p>
-        </DialogForm>
-      {/if}
-      {#if localNote}
-        {#snippet trashIcon()}
-          <IconaMoonTrash
-            role="presentation"
-            class=" icon__size-3"
-            height="none"
-            width="none"
-            alt=""
-          />
-        {/snippet}
-        <DialogForm
-          anchorClass="button__icon"
-          anchorLabel={$_("Supprimer cette note", "")}
-          anchor={trashIcon}
-          title={$_("Supprimer cette note ?", "")}
-          onsubmit={(e: SubmitEvent) => {
-            e.preventDefault();
-            removeDocument(localNote);
-            dispatch("delete", { note: localNote });
-          }}
-        >
-          <p>This will remove the note from your diary. This action is irreversible.</p>
-        </DialogForm>
-      {/if}
+<div class="with_sticky_header">
+  <header>
+    <div class="wrapper flex__row flex__column_gap-1 flex__justify-between flex__align-center">
+      <MainNavigationToggle class="layout__multi-hidden" />
+      <h2 class="flex__grow m__block-0">
+        {#if localNote}
+          {$_("Éditer cette note", "")}
+        {:else}
+          {$_("Nouvelle note", "")}
+        {/if}
+      </h2>
+  
+      <div>
+        {#if localNote}
+          <a
+            class="button__icon button"
+            href={`/my/notes/${localNote.id}?view=detail`}
+            aria-label={$_("Voir cette note", "")}
+            title={$_("Voir cette note", "")}
+          >
+            <IconaMoonEye
+              role="presentation"
+              alt=""
+              class=" icon__size-3"
+              height="none"
+              width="none"
+            />
+          </a>
+        {/if}
+        {#if forms.length > 0}
+          {#snippet formIcon()}
+            <IconaMoonFileDocument
+              role="presentation"
+              class=" icon__size-3"
+              height="none"
+              width="none"
+              alt=""
+            />
+          {/snippet}
+          <DialogForm
+            anchorClass="button__icon"
+            anchorLabel={$_("Ajouter un formulaire", "")}
+            anchor={formIcon}
+            title={$_("Ajouter un formulaire", "")}
+            onsubmit={async (e: SubmitEvent) => {
+              if (!localNote) {
+                let noteData = getNewNote();
+                noteData.id = buildUniqueId();
+                localNote = await globals.db.documents.insert(noteData);
+              }
+              let updateData = {
+                fragments: { ...(localNote.fragments || {}) }
+              };
+              if (selectedForm) {
+                updateData.fragments.form = getNewFormFragment(selectedForm, {}, {});
+              } else {
+                updateData.fragments.form = undefined;
+              }
+              await localNote.incrementalUpdate({
+                $set: getNoteUpdateData(localNote, updateData)
+              });
+              localNote = await localNote.getLatest();
+              e.preventDefault();
+            }}
+          >
+            <div class="form__field">
+              <label for="form-id">{$_("Formulaire", "")}</label>
+              <select name="form-id" id="form-id" bind:value={selectedForm}>
+                <option value={undefined}>---</option>
+                {#each forms as form}
+                  <option value={form.data.id}>{form.data.name}</option>
+                {/each}
+              </select>
+            </div>
+            <p>{$_("Attacher ce formulaire à la note.", "")}</p>
+          </DialogForm>
+        {/if}
+        {#if localNote}
+          {#snippet trashIcon()}
+            <IconaMoonTrash
+              role="presentation"
+              class=" icon__size-3"
+              height="none"
+              width="none"
+              alt=""
+            />
+          {/snippet}
+          <DialogForm
+            anchorClass="button__icon"
+            anchorLabel={$_("Supprimer cette note", "")}
+            anchor={trashIcon}
+            title={$_("Supprimer cette note ?", "")}
+            onsubmit={(e: SubmitEvent) => {
+              e.preventDefault();
+              removeDocument(localNote);
+              dispatch("delete", { note: localNote });
+            }}
+          >
+            <p>This will remove the note from your diary. This action is irreversible.</p>
+          </DialogForm>
+        {/if}
+      </div>
     </div>
   </header>
   <form class="flow | scroll" onsubmit={(e) => onSubmitHandler?.(e)}>
-    <div class="wrapper p__inline-3 p__block-3">
+    <div class="wrapper p__block-2">
       <FragmentEditor
         note={localNote}
         {columns}
