@@ -12,6 +12,7 @@
     getById,
     removeDocument
   } from "$lib/db";
+  import debounce from "lodash/debounce";
 
   interface Props {
     children: import("svelte").Snippet;
@@ -95,11 +96,17 @@
     }}
   >
     {#each form.fields as field, i (i)}
-      <FormFieldRendered {field} formId={form.id} bind:value={v[field.id]} />
+      <FormFieldRendered
+        {field}
+        formId={form.id}
+        bind:value={v[field.id]}
+        oninput={debounce((e) => {
+          onsubmit(cloneDeep(v));
+        }, 500)}
+      />
     {/each}
 
     <div class="flex__row flex__justify-between">
-      <button type="submit">{$_("Sauvegarder", "")}</button>
       <button
         type="button"
         class="button__link"
@@ -112,6 +119,7 @@
             .exec();
           if (last) {
             v = cloneDeep(last.fragments.form.data);
+            onsubmit(cloneDeep(v));
           }
         }}>{$_("Pré-remplir", "")}</button
       >

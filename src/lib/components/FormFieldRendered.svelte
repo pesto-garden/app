@@ -3,14 +3,15 @@
   import sortBy from "lodash/sortBy";
 
   interface Props {
-    children: import("svelte").Snippet;
+    children?: import("svelte").Snippet;
     formId: string;
     field: FormFieldConfiguration;
     label?: string;
     value?: boolean | number | string;
+    oninput?: Function;
   }
 
-  let { field, label, children, formId, value = $bindable() } = $props();
+  let { field, label, children, formId, value = $bindable(), oninput }: Props = $props();
 
   let suggestions = $state(field.suggestions || []);
 
@@ -51,6 +52,12 @@
       list={`field-autocomplete-${formId}-${field.id}`}
       step="any"
       bind:value
+      oninput={(e) => {
+        oninput?.(
+          field.type === "number" ? e.target.valueAsNumber : e.target.value
+        )
+        return true
+      }}
     />
     <datalist id={`field-autocomplete-${formId}-${field.id}`}>
       {#each suggestions as suggestion}
@@ -64,6 +71,10 @@
       name={`field-${formId}-${field.id}`}
       type="checkbox"
       bind:checked={value}
+      oninput={(e) => {
+        oninput?.(e.target.checked)
+        return true
+      }}
     />
     <label for={`field-${formId}-${field.id}`}>{field.label}</label>
   {/if}
