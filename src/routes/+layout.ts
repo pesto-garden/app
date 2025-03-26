@@ -5,10 +5,10 @@ import { db as $db } from "$lib/store-db";
 export const ssr = false;
 export const prerender = false;
 
-export async function load() {
+async function setup () {
   if (!window.SubtleCrypto) {
     throw Error(
-      `Error: window.SubtleCrytpo is not available. If you are running a development environment, add 
+      `window.SubtleCrytpo is not available. If you are running a development environment, add 
         ${location.protocol + "//" + location.host}
       to chrome:flags/#unsafely-treat-insecure-origin-as-secure`
     );
@@ -31,4 +31,12 @@ export async function load() {
   return {
     db: globals.db
   };
+}
+export async function load() {
+  try {
+    return await setup()
+  } catch (e) {
+    alert(`${e}`)
+    throw e
+  }
 }
