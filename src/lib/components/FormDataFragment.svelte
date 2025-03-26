@@ -1,7 +1,5 @@
 <script lang="ts">
-  import { onDestroy } from "svelte";
-  import { type FormFragmentType, globals } from "$lib/db";
-  import { syncPropertiesWithExternalChanges, clearSubscriptions } from "$lib/ui";
+  import { type FormFragmentType } from "$lib/db";
   import { forms } from "$lib/store-db";
 
   interface Props {
@@ -12,14 +10,10 @@
 
   let fields: string[] = $state(Object.keys(fragment.data || {}));
   let annotations: string[] = $state(Object.keys(fragment.annotations || {}));
-  let localForms = $state({});
-  forms.subscribe((v) => {
-    localForms = v;
-  });
   let form;
   let fieldsById = {};
-  $effect(() => {
-    form = forms[fragment.id];
+  forms.subscribe((v) => {
+    form = v[fragment.id];
     form?.fields.forEach((f) => {
       fieldsById[f.id] = f;
     });
@@ -33,7 +27,7 @@
 <table class="table__simpledata">
   <caption>
     <a href={`/my?q=form:${fragment.id}`}>
-      {forms[fragment.id]?.name || fragment.id}
+      {form.name || fragment.id}
     </a>
   </caption>
   <tbody>
