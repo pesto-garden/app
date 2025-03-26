@@ -50,7 +50,6 @@
           bind:this={searchInput}
           class="flex__grow"
           type="search"
-          autocomplete="off"
           name="search"
           id="search"
           placeholder={$_("Rechercher", "")}

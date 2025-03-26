@@ -54,7 +54,6 @@
     <textarea
       class="flex__grow | input__discrete autoresize"
       type="text"
-      autocomplete="off"
       id={`todo-${id}-text`}
       bind:this={textarea}
       value={todo.text || ""}
